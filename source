@@ -51,13 +51,16 @@ else
 	end
 end
 
-Rayfield.DisplayOrder = 100
+
 
 local Main = Rayfield.Main
 local Topbar = Main.Topbar
 local Elements = Main.Elements
 local LoadingFrame = Main.LoadingFrame
 local TabList = Main.TabList
+
+Rayfield.DisplayOrder = 100
+LoadingFrame.Version.Text = Release
 
 local Minimised = false
 local Hidden = false
@@ -302,8 +305,6 @@ local neon = (function() -- Open sourced neon module
 					pt[propName] = propValue
 				end
 			end
-		else
-			warn(('No part bindings exist for %s'):format(frame:GetFullName()))
 		end
 	end
 
@@ -316,8 +317,6 @@ local neon = (function() -- Open sourced neon module
 				v:Destroy()
 			end
 			binds[frame] = nil
-		else
-			warn(('No part bindings exist for %s'):format(frame:GetFullName()))
 		end
 	end
 
