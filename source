@@ -610,7 +610,7 @@ function Minimise()
 	end
 	
 	for _, tab in ipairs(Elements:GetChildren()) do
-		if tab.Name ~= "Template" and tab.ClassName == "ScrollingFrame" then
+		if tab.Name ~= "Template" and tab.ClassName == "ScrollingFrame" and tab.Name ~= "Placeholder" then
 			for _, element in ipairs(tab:GetChildren()) do
 				if element.ClassName == "Frame" then
 					if element.Name ~= "SectionSpacing" then
@@ -1370,4 +1370,3 @@ for _, TopbarButton in ipairs(Topbar:GetChildren()) do
 end
 
 return RayfieldLibrary
-
