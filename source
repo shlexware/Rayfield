@@ -453,7 +453,7 @@ function Hide()
 		if tab.Name ~= "Template" and tab.ClassName == "ScrollingFrame" and tab.Name ~= "Placeholder" then
 			for _, element in ipairs(tab:GetChildren()) do
 				if element.ClassName == "Frame" then
-					if element.Name ~= "SectionSpacing" then
+					if element.Name ~= "SectionSpacing" and element.Name ~= "Placeholder" then
 						if element.Name == "SectionTitle" then
 							TweenService:Create(element.Title, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
 						else
@@ -513,7 +513,7 @@ function Unhide()
 		if tab.Name ~= "Template" and tab.ClassName == "ScrollingFrame" and tab.Name ~= "Placeholder" then
 			for _, element in ipairs(tab:GetChildren()) do
 				if element.ClassName == "Frame" then
-					if element.Name ~= "SectionSpacing" then
+					if element.Name ~= "SectionSpacing" and element.Name ~= "Placeholder" then
 						if element.Name == "SectionTitle" then
 							TweenService:Create(element.Title, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
 						else
@@ -555,7 +555,7 @@ function Maximise()
 		if tab.Name ~= "Template" and tab.ClassName == "ScrollingFrame" and tab.Name ~= "Placeholder" then
 			for _, element in ipairs(tab:GetChildren()) do
 				if element.ClassName == "Frame" then
-					if element.Name ~= "SectionSpacing" then
+					if element.Name ~= "SectionSpacing" and element.Name ~= "Placeholder" then
 						if element.Name == "SectionTitle" then
 							TweenService:Create(element.Title, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
 						else
@@ -612,7 +612,7 @@ function Minimise()
 		if tab.Name ~= "Template" and tab.ClassName == "ScrollingFrame" and tab.Name ~= "Placeholder" then
 			for _, element in ipairs(tab:GetChildren()) do
 				if element.ClassName == "Frame" then
-					if element.Name ~= "SectionSpacing" then
+					if element.Name ~= "SectionSpacing" and element.Name ~= "Placeholder" then
 						if element.Name == "SectionTitle" then
 							TweenService:Create(element.Title, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
 						else
