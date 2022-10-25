@@ -1,7 +1,7 @@
 # Rayfield Interface Suite
 This is the written documentation for Rayfield Interface Suite
 
-Last updated for the Beta 2 release
+Last updated for the Beta 3 release
 
 ## Booting the Library
 ```lua
@@ -12,10 +12,19 @@ local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shle
 
 ## Creating a Window
 ```lua
-local Window = Rayfield:CreateWindow({Name = "Rayfield Example Window"})
+local Window = Rayfield:CreateWindow({
+Name = "Rayfield Example Window",
+LoadingTitle = "Rayfield Interface Suite",
+LoadingSubtitle = "by Sirius",
+KeySystem = false,
+KeySettings = {
+	Title = "Sirius Hub",
+	Subtitle = "Key System",
+	Note = "Join the discord (discord.gg/sirius)",
+	Key = "ABCDEF"
+}
+})
 ```
-
-
 
 ## Creating a Tab
 ```lua
@@ -83,6 +92,10 @@ local Slider = Tab:CreateSlider({
     		-- The variable (Value) is a number which correlates to the value the slider is currently at
 	end,
 })
+```
+### Updating a Slider
+```lua
+Slider:Set(10) -- The new slider integer value
 ```
 
 ## Creating a Label
