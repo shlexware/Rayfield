@@ -29,7 +29,7 @@ local Section = Tab:CreateSection("Section Example")
 
 ## Notifying the user
 ```lua
-Rayfield:Notify("Title Example","Content/Description Example")
+Rayfield:Notify("Title Example","Content/Description Example",10010348543) -- (t,c,image)
 ```
 
 ## Creating a Button
