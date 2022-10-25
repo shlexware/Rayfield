@@ -675,7 +675,7 @@ function RayfieldLibrary:CreateWindow(Settings) --Name = "Phantom Forces", SaveC
 	end
 	
 	if Settings.KeySystem then
-		local AttemptsRemaining = 5
+		local AttemptsRemaining = math.random(3,6)
 		Rayfield.Enabled = false
 		local KeyUI = game:GetObjects("rbxassetid://11380036235")[1]
 		
