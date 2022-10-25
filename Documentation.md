@@ -50,7 +50,7 @@ Tab:CreateToggle({
 	CurrentValue = false,
 	Callback = function(Value)
 		-- The function that takes place when the toggle is pressed
-    -- The variable (Value) is a boolean on whether the toggle is true or false
+    		-- The variable (Value) is a boolean on whether the toggle is true or false
 	end,
 })
 ```
@@ -69,7 +69,7 @@ Tab:CreateSlider({
 	CurrentValue = 10,
 	Callback = function(Value)
 		-- The function that takes place when the slider changes
-    -- The variable (Value) is a number which correlates to the value the slider is currently at
+    		-- The variable (Value) is a number which correlates to the value the slider is currently at
 	end,
 })
 ```
@@ -93,7 +93,7 @@ Tab:CreateInput({
 	RemoveTextAfterFocusLost = false,
 	Callback = function(Text)
 		-- The function that takes place when the input is changed
-    -- The variable (Text) is a string for the value in the text box
+    		-- The variable (Text) is a string for the value in the text box
 	end,
 })
 ```
@@ -104,9 +104,10 @@ Tab:CreateInput({
 Tab:CreateKeybind({
 	Name = "Keybind Example",
 	CurrentKeybind = "Q",
+	HoldToInteract = false,
 	Callback = function(Keybind)
 		-- The function that takes place when the keybind is pressed
-    -- The variable (Keybind) is a string for the keybind currently in use
+    		-- The variable (Keybind) is a boolean for whether the keybind is being held or not (HoldToInteract needs to be true)
 	end,
 })
 ```
@@ -120,7 +121,7 @@ Tab:CreateDropdown({
 	CurrentOption = "hi",
 	Callback = function(Option)
 	  -- The function that takes place when the selected option is changed
-    -- The variable (Option) is a string for the value that the dropdown was changed to
+    	  -- The variable (Option) is a string for the value that the dropdown was changed to
 	end,
 })
 ```
