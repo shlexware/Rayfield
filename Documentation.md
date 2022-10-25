@@ -26,6 +26,7 @@ local Tab = Window:CreateTab("Tab Example")
 ```lua
 local Section = Tab:CreateSection("Section Example")
 ```
+### Updating a Section
 ```lua
 Section:Set("Section Example")
 ```
@@ -44,6 +45,7 @@ local Button = Tab:CreateButton({
 	end,
 })
 ```
+### Updating a Button
 ```lua
 Button:Set("Button Example")
 ```
