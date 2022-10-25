@@ -127,4 +127,6 @@ Tab:CreateDropdown({
 ```
 
 ## Destroying the Interface
-Not in Beta 1
+```lua
+Rayfield:Destroy()
+```
