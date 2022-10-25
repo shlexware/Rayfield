@@ -420,8 +420,8 @@ function RayfieldLibrary:Notify(Title,Content,Image)
 			end
 		end
 		wait(1.35)
-		Notification:Destroy()
 		neon:UnbindFrame(Notification.BlurModule)
+		Notification:Destroy()
 		blurlight:Destroy()
 		FigureNotifications()
 	end)
