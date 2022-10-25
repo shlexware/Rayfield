@@ -700,7 +700,7 @@ function RayfieldLibrary:CreateWindow(Settings) --Name = "Phantom Forces", SaveC
 		TabButton.Title.Text = Name
 		TabButton.Parent = TabList
 		TabButton.Title.TextWrapped = false
-		TabButton.Size = UDim2.new(0, TabButton.Title.TextBounds.X + 30, 1, 0)
+		TabButton.Size = UDim2.new(0, TabButton.Title.TextBounds.X + 30, 0, 30)
 
 		TabButton.BackgroundTransparency = 1
 		TabButton.Title.TextTransparency = 1
@@ -760,10 +760,13 @@ function RayfieldLibrary:CreateWindow(Settings) --Name = "Phantom Forces", SaveC
 					TweenService:Create(OtherTabButton.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
 				end
 			end
-			TweenService:Create(Elements, TweenInfo.new(1, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 460,0, 330)}):Play()
-			Elements.UIPageLayout:JumpTo(TabPage)
-			wait(0.2)
-			TweenService:Create(Elements, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 475,0, 366)}):Play()
+			if Elements.UIPageLayout.CurrentPage ~= TabPage then
+				TweenService:Create(Elements, TweenInfo.new(1, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 460,0, 330)}):Play()
+				Elements.UIPageLayout:JumpTo(TabPage)
+				wait(0.2)
+				TweenService:Create(Elements, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 475,0, 366)}):Play()
+			end
+			
 		end)
 
 		local Tab = {}
