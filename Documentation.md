@@ -76,7 +76,7 @@ Toggle:Set(false)
 ```
 
 ## Creating a Color Picker
-Not in Beta 2
+Not in Beta 3
 
 
 ## Creating a Slider
