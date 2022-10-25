@@ -1,7 +1,7 @@
 # Rayfield Interface Suite
 This is the written documentation for Rayfield Interface Suite
 
-Last updated for the Beta 1 release
+Last updated for the Beta 2 release
 
 ## Booting the Library
 ```lua
@@ -26,6 +26,9 @@ local Tab = Window:CreateTab("Tab Example")
 ```lua
 local Section = Tab:CreateSection("Section Example")
 ```
+```lua
+Section:Set("Section Example")
+```
 
 ## Notifying the user
 ```lua
@@ -34,18 +37,20 @@ Rayfield:Notify("Title Example","Content/Description Example",10010348543) -- (t
 
 ## Creating a Button
 ```lua
-Tab:CreateButton({
+local Button = Tab:CreateButton({
 	Name = "Button Example",
 	Callback = function()
 		-- The function that takes place when the button is pressed
 	end,
 })
 ```
-
+```lua
+Button:Set("Button Example")
+```
 
 ## Creating a Toggle
 ```lua
-Tab:CreateToggle({
+local Toggle = Tab:CreateToggle({
 	Name = "Toggle Example",
 	CurrentValue = false,
 	Callback = function(Value)
@@ -54,14 +59,18 @@ Tab:CreateToggle({
 	end,
 })
 ```
+### Updating a Toggle
+```lua
+Toggle:Set(false)
+```
 
 ## Creating a Color Picker
-Not in Beta 1
+Not in Beta 2
 
 
 ## Creating a Slider
 ```lua
-Tab:CreateSlider({
+local Slider = Tab:CreateSlider({
 	Name = "Slider Example",
 	Range = {0, 100},
 	Increment = 10,
@@ -76,18 +85,25 @@ Tab:CreateSlider({
 
 ## Creating a Label
 ```lua
-Tab:CreateLabel("Label Example")
+local Label = Tab:CreateLabel("Label Example")
+```
+### Updating a Label
+```lua
+Label:Set("Label Example")
 ```
 
 ## Creating a Paragraph
 ```lua
-Tab:CreateParagraph({Title = "Paragraph Example", Content = "Paragraph Example"})
+local Paragraph = Tab:CreateParagraph({Title = "Paragraph Example", Content = "Paragraph Example"})
+```
+### Updating a Paragraph
+```lua
+Paragprah:Set({Title = "Paragraph Example", Content = "Paragraph Example"})
 ```
 
-
-## Creating an Adaptive Input
+## Creating an Adaptive Input (TextBox)
 ```lua
-Tab:CreateInput({
+local Input = Tab:CreateInput({
 	Name = "Input Example",
 	PlaceholderText = "Input Placeholder",
 	RemoveTextAfterFocusLost = false,
@@ -99,9 +115,10 @@ Tab:CreateInput({
 ```
 
 
+
 ## Creating a Keybind
 ```lua
-Tab:CreateKeybind({
+local Keybind = Tab:CreateKeybind({
 	Name = "Keybind Example",
 	CurrentKeybind = "Q",
 	HoldToInteract = false,
@@ -111,11 +128,14 @@ Tab:CreateKeybind({
 	end,
 })
 ```
-
+### Updating a Keybind
+```lua
+Keybind:Set("RightCtrl") -- Keybind (string)
+```
 
 ## Creating a Dropdown menu
 ```lua
-Tab:CreateDropdown({
+local Dropdown = Tab:CreateDropdown({
 	Name = "Dropdown Example",
 	Options = {"Option 1","Option 2"},
 	CurrentOption = "hi",
@@ -125,6 +145,8 @@ Tab:CreateDropdown({
 	end,
 })
 ```
+
+
 
 ## Destroying the Interface
 ```lua
