@@ -833,6 +833,7 @@ function RayfieldLibrary:CreateWindow(Settings) --Name = "Phantom Forces", SaveC
 	local FirstTab = false
 	local Window = {}
 	function Window:CreateTab(Name)
+		local SDone = false
 		local TabButton = TabList.Template:Clone()
 		TabButton.Name = Name
 		TabButton.Title.Text = Name
@@ -973,15 +974,18 @@ function RayfieldLibrary:CreateWindow(Settings) --Name = "Phantom Forces", SaveC
 
 		-- Section
 		function Tab:CreateSection(SectionName)
+			
 			local SectionValue = {}
-
+			
+			if SDone then
+				local SectionSpace = Elements.Template.SectionSpacing:Clone()
+				SectionSpace.Visible = true
+				SectionSpace.Parent = TabPage
+			end
+			
 			local Section = Elements.Template.SectionTitle:Clone()
 			Section.Title.Text = SectionName
 			Section.Visible = true
-			Section.Parent = TabPage
-
-			local SectionSpace = Elements.Template.SectionSpacing:Clone()
-			SectionSpace.Visible = true
 			Section.Parent = TabPage
 
 			Section.Title.TextTransparency = 1
@@ -990,7 +994,9 @@ function RayfieldLibrary:CreateWindow(Settings) --Name = "Phantom Forces", SaveC
 			function SectionValue:Set(NewSection)
 				Section.Title.Text = NewSection
 			end
-
+			
+			SDone = true
+			
 			return SectionValue
 		end
 
