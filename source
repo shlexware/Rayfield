@@ -696,7 +696,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 	Topbar.Visible = false
 	Elements.Visible = false
 	LoadingFrame.Visible = true
-	
+
 	if Settings.ConfigurationSaving then
 		CFileName = Settings.ConfigurationSaving.FileName or game.PlaceId
 		CEnabled = Settings.ConfigurationSaving.Enabled or false
@@ -1271,9 +1271,10 @@ function RayfieldLibrary:CreateWindow(Settings)
 					end
 				end)
 			end
-
-			if Settings.ConfigurationSaving.Enabled and DropdownSettings.Flag then
-				Flags[DropdownSettings.Flag] = DropdownSettings
+			if Settings.ConfigurationSaving then
+				if Settings.ConfigurationSaving.Enabled and DropdownSettings.Flag then
+					Flags[DropdownSettings.Flag] = DropdownSettings
+				end
 			end
 		end
 
@@ -1365,11 +1366,11 @@ function RayfieldLibrary:CreateWindow(Settings)
 				Keybind.KeybindFrame.KeybindBox:ReleaseFocus()
 				SaveConfiguration(Settings.ConfigurationSaving.FileName)
 			end
-
-			if Settings.ConfigurationSaving.Enabled and KeybindSettings.Flag then
-				Flags[KeybindSettings.Flag] = KeybindSettings
+			if Settings.ConfigurationSaving then
+				if Settings.ConfigurationSaving.Enabled and KeybindSettings.Flag then
+					Flags[KeybindSettings.Flag] = KeybindSettings
+				end
 			end
-
 			return KeybindSettings
 		end
 
@@ -1481,9 +1482,10 @@ function RayfieldLibrary:CreateWindow(Settings)
 				SaveConfiguration(Settings.ConfigurationSaving.FileName)
 			end
 
-
-			if Settings.ConfigurationSaving.Enabled and ToggleSettings.Flag then
-				Flags[ToggleSettings.Flag] = ToggleSettings
+			if Settings.ConfigurationSaving then
+				if Settings.ConfigurationSaving.Enabled and ToggleSettings.Flag then
+					Flags[ToggleSettings.Flag] = ToggleSettings
+				end
 			end
 
 			return ToggleSettings
@@ -1568,11 +1570,11 @@ function RayfieldLibrary:CreateWindow(Settings)
 				SliderSettings.CurrentValue = NewVal
 				SaveConfiguration(Settings.ConfigurationSaving.FileName)
 			end
-
-			if Settings.ConfigurationSaving.Enabled and SliderSettings.Flag then
-				Flags[SliderSettings.Flag] = SliderSettings
+			if Settings.ConfigurationSaving then
+				if Settings.ConfigurationSaving.Enabled and SliderSettings.Flag then
+					Flags[SliderSettings.Flag] = SliderSettings
+				end
 			end
-
 			return SliderSettings
 		end
 
