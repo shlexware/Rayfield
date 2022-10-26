@@ -8,6 +8,12 @@ Last updated for the Beta 4 release
 local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Rayfield/main/source'))()
 ```
 
+### Secure Mode
+If the game you're trying to run Rayfield Interface Suite on, is detecting or crashing when you use Rayfield Interface Suite, try using Secure Mode:
+- Place `getgenv().SecureMode = true` above the initial Rayfield loadstring
+
+Rayfield will now use Secure Mode and attempt to reduce detection
+
 ## Enabling Configuration Saving
 - Enable ConfigurationSaving in the CreateWindow function
 - Choose an appropiate FileName in the CreateWindow function
