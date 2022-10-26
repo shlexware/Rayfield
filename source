@@ -1277,8 +1277,8 @@ function RayfieldLibrary:CreateWindow(Settings)
 					end
 				end)
 			end
-			
-		
+
+
 			function DropdownSettings:Set(NewOption)
 				Dropdown.Selected.Text = NewOption
 				DropdownSettings.CurrentOption = NewOption
@@ -1295,13 +1295,13 @@ function RayfieldLibrary:CreateWindow(Settings)
 
 				end
 			end
-			
+
 			if Settings.ConfigurationSaving then
 				if Settings.ConfigurationSaving.Enabled and DropdownSettings.Flag then
 					Flags[DropdownSettings.Flag] = DropdownSettings
 				end
 			end
-			
+
 			return DropdownSettings
 		end
 
