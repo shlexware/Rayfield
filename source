@@ -67,7 +67,6 @@ local TabList = Main.TabList
 Rayfield.DisplayOrder = 100
 LoadingFrame.Version.Text = Release
 
-local SecureMode = nil
 local CFileName = nil
 local CEnabled = false
 local Minimised = false
@@ -725,8 +724,6 @@ function RayfieldLibrary:CreateWindow(Settings)
 			end	
 		end
 	end)
-
-	SecureMode = Settings.SecureMode or false
 
 	AddDraggingFunctionality(Topbar,Main)
 
