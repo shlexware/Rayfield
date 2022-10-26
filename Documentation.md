@@ -9,10 +9,10 @@ local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shle
 ```
 
 ## Enabling Configuration Saving
-Enable ConfigurationSaving in the CreateWindow function
-Choose an appropiate FileName in the CreateWindow function
-Choose an unique flag identifier for each element you create
-Place `Rayfield:LoadConfiguration()` at the bottom of all your code
+- Enable ConfigurationSaving in the CreateWindow function
+- Choose an appropiate FileName in the CreateWindow function
+- Choose an unique flag identifier for each element you create
+- Place `Rayfield:LoadConfiguration()` at the bottom of all your code
 
 Rayfield will now automatically save and load your configuration
 
