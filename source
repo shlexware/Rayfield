@@ -130,16 +130,15 @@ local function LoadConfiguration(Configuration)
 end
 
 local function SaveConfiguration(Name)
+	if not CEnabled then return end
 	local Data = {}
 	for i,v in pairs(Flags) do
-		if v.Configuration.Enabled then
-			if v.Type == "Colorpicker" then
-				Data[i] = PackColor(v.CurrentValue)
-			else
-				Data[i] = v.CurrentValue or v.CurrentKeybind or v.CurrentOption
-			end
-		end	
-	end
+		if v.Type == "Colorpicker" then
+			Data[i] = PackColor(v.CurrentValue)
+		else
+			Data[i] = v.CurrentValue or v.CurrentKeybind or v.CurrentOption
+		end
+	end	
 	writefile(ConfigurationFolder .. "/" .. Name .. ConfigurationExtension, tostring(HttpService:JSONEncode(Data)))
 end
 
@@ -698,13 +697,15 @@ function RayfieldLibrary:CreateWindow(Settings)
 	Elements.Visible = false
 	LoadingFrame.Visible = true
 	
-	CFileName = Settings.Configuration.FileName or game.PlaceId
-	CEnabled = Settings.Configuration.Enabled or false
-	
-	if Settings.Configuration.Enabled then
-		if not isfolder(ConfigurationFolder) then
-			makefolder(ConfigurationFolder)
-		end	
+	if Settings.ConfigurationSaving then
+		CFileName = Settings.ConfigurationSaving.FileName or game.PlaceId
+		CEnabled = Settings.ConfigurationSaving.Enabled or false
+
+		if Settings.ConfigurationSaving.Enabled then
+			if not isfolder(ConfigurationFolder) then
+				makefolder(ConfigurationFolder)
+			end	
+		end
 	end
 
 	AddDraggingFunctionality(Topbar,Main)
@@ -716,12 +717,12 @@ function RayfieldLibrary:CreateWindow(Settings)
 			TabButton.UIStroke.Transparency = 1
 		end
 	end
-	
+
 	if Settings.KeySystem then
 		local AttemptsRemaining = math.random(3,6)
 		Rayfield.Enabled = false
 		local KeyUI = game:GetObjects("rbxassetid://11380036235")[1]
-		
+
 		if gethui then
 			KeyUI.Parent = gethui()
 		elseif syn.protect_gui then
@@ -730,7 +731,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 		else
 			KeyUI.Parent = CoreGui
 		end
-		
+
 		if gethui then
 			for _, Interface in ipairs(gethui():GetChildren()) do
 				if Interface.Name == KeyUI.Name and Interface ~= KeyUI then
@@ -746,12 +747,12 @@ function RayfieldLibrary:CreateWindow(Settings)
 				end
 			end
 		end
-		
+
 		local KeyMain = KeyUI.Main
 		KeyMain.Title.Text = Settings.KeySettings.Title or Settings.Name
 		KeyMain.Subtitle.Text = Settings.KeySettings.Subtitle or "Key System"
 		KeyMain.NoteMessage.Text = Settings.KeySettings.Note or "No instructions"
-		
+
 		KeyMain.Size = UDim2.new(0, 467, 0, 175)
 		KeyMain.BackgroundTransparency = 1
 		KeyMain.Shadow.Image.ImageTransparency = 1
@@ -764,7 +765,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 		KeyMain.NoteTitle.TextTransparency = 1
 		KeyMain.NoteMessage.TextTransparency = 1
 		KeyMain.Hide.ImageTransparency = 1
-		
+
 		TweenService:Create(KeyMain, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play()
 		TweenService:Create(KeyMain, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 500, 0, 187)}):Play()
 		TweenService:Create(KeyMain.Shadow.Image, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {ImageTransparency = 0.5}):Play()
@@ -781,8 +782,8 @@ function RayfieldLibrary:CreateWindow(Settings)
 		TweenService:Create(KeyMain.NoteMessage, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
 		wait(0.15)
 		TweenService:Create(KeyMain.Hide, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageTransparency = 0.3}):Play()
-		
-		
+
+
 		KeyUI.Main.Input.InputBox.FocusLost:Connect(function()
 			if KeyMain.Input.InputBox.Text == Settings.KeySettings.Key then
 				TweenService:Create(KeyMain, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
@@ -828,7 +829,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 				TweenService:Create(KeyMain, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 500, 0, 187)}):Play()
 			end
 		end)
-		
+
 		KeyMain.Hide.MouseButton1Click:Connect(function()
 			TweenService:Create(KeyMain, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
 			TweenService:Create(KeyMain, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 467, 0, 175)}):Play()
@@ -849,11 +850,11 @@ function RayfieldLibrary:CreateWindow(Settings)
 	else
 		Passthrough = true
 	end
-	
+
 	repeat wait() until Passthrough
 	Notifications.Template.Visible = false
 	Notifications.Visible = true
-	
+
 	Rayfield.Enabled = true
 
 	wait(0.5)
@@ -987,7 +988,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 					TweenService:Create(Button.ElementIndicator, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {TextTransparency = 0.9}):Play()
 					TweenService:Create(Button.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
 				else
-					SaveConfiguration(Settings.Configuration.FileName)
+					SaveConfiguration(Settings.ConfigurationSaving.FileName)
 					TweenService:Create(Button, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(45, 45, 45)}):Play()
 					TweenService:Create(Button.ElementIndicator, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
 					TweenService:Create(Button.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
@@ -1018,15 +1019,15 @@ function RayfieldLibrary:CreateWindow(Settings)
 
 		-- Section
 		function Tab:CreateSection(SectionName)
-			
+
 			local SectionValue = {}
-			
+
 			if SDone then
 				local SectionSpace = Elements.Template.SectionSpacing:Clone()
 				SectionSpace.Visible = true
 				SectionSpace.Parent = TabPage
 			end
-			
+
 			local Section = Elements.Template.SectionTitle:Clone()
 			Section.Title.Text = SectionName
 			Section.Visible = true
@@ -1038,9 +1039,9 @@ function RayfieldLibrary:CreateWindow(Settings)
 			function SectionValue:Set(NewSection)
 				Section.Title.Text = NewSection
 			end
-			
+
 			SDone = true
-			
+
 			return SectionValue
 		end
 
@@ -1124,7 +1125,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 				if InputSettings.RemoveTextAfterFocusLost then
 					Input.InputFrame.InputBox.Text = ""
 				end
-				SaveConfiguration(Settings.Configuration.FileName)
+				SaveConfiguration(Settings.ConfigurationSaving.FileName)
 			end)
 
 			Input.MouseEnter:Connect(function()
@@ -1266,13 +1267,13 @@ function RayfieldLibrary:CreateWindow(Settings)
 						wait(0.35)
 						Dropdown.List.Visible = false
 						Debounce = false	
-						SaveConfiguration(Settings.Configuration.FileName)
+						SaveConfiguration(Settings.ConfigurationSaving.FileName)
 					end
 				end)
 			end
-			
-			if Settings.Configuration.Enabled and DropdownSettings.Configuration.Flag then
-				Flags[DropdownSettings.Configuration.Flag] = DropdownSettings
+
+			if Settings.ConfigurationSaving.Enabled and DropdownSettings.Flag then
+				Flags[DropdownSettings.Flag] = DropdownSettings
 			end
 		end
 
@@ -1304,7 +1305,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 				CheckingForKey = false
 				if Keybind.KeybindFrame.KeybindBox.Text == nil or "" then
 					Keybind.KeybindFrame.KeybindBox.Text = KeybindSettings.CurrentKeybind
-					SaveConfiguration(Settings.Configuration.FileName)
+					SaveConfiguration(Settings.ConfigurationSaving.FileName)
 				end
 			end)
 
@@ -1324,8 +1325,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 						Keybind.KeybindFrame.KeybindBox.Text = tostring(NewKeyNoEnum)
 						KeybindSettings.CurrentKeybind = tostring(NewKeyNoEnum)
 						Keybind.KeybindFrame.KeybindBox:ReleaseFocus()
-						SaveConfiguration(Settings.Configuration.FileName)
-						print("yo")
+						SaveConfiguration(Settings.ConfigurationSaving.FileName)
 					end
 				elseif (input.KeyCode == Enum.KeyCode[KeybindSettings.CurrentKeybind] and not processed) then
 					local Held = true
@@ -1360,17 +1360,16 @@ function RayfieldLibrary:CreateWindow(Settings)
 			end)
 
 			function KeybindSettings:Set(NewKeybind)
-				print("set")
 				Keybind.KeybindFrame.KeybindBox.Text = tostring(NewKeybind)
 				KeybindSettings.CurrentKeybind = tostring(NewKeybind)
 				Keybind.KeybindFrame.KeybindBox:ReleaseFocus()
-				SaveConfiguration(Settings.Configuration.FileName)
+				SaveConfiguration(Settings.ConfigurationSaving.FileName)
 			end
-			
-			if Settings.Configuration.Enabled and KeybindSettings.Configuration.Flag then
-				Flags[KeybindSettings.Configuration.Flag] = KeybindSettings
+
+			if Settings.ConfigurationSaving.Enabled and KeybindSettings.Flag then
+				Flags[KeybindSettings.Flag] = KeybindSettings
 			end
-			
+
 			return KeybindSettings
 		end
 
@@ -1444,9 +1443,9 @@ function RayfieldLibrary:CreateWindow(Settings)
 					TweenService:Create(Toggle.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 0}):Play()		
 				end
 				ToggleSettings.Callback(ToggleSettings.CurrentValue)
-				SaveConfiguration(Settings.Configuration.FileName)
+				SaveConfiguration(Settings.ConfigurationSaving.FileName)
 			end)
-			
+
 			function ToggleSettings:Set(NewToggleValue)
 				if NewToggleValue then
 					ToggleSettings.CurrentValue = true
@@ -1479,14 +1478,14 @@ function RayfieldLibrary:CreateWindow(Settings)
 					TweenService:Create(Toggle.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 0}):Play()	
 				end
 				ToggleSettings.Callback(ToggleSettings.CurrentValue)
-				SaveConfiguration(Settings.Configuration.FileName)
+				SaveConfiguration(Settings.ConfigurationSaving.FileName)
 			end
-			
-			
-			if Settings.Configuration.Enabled and ToggleSettings.Configuration.Flag then
-				Flags[ToggleSettings.Configuration.Flag] = ToggleSettings
+
+
+			if Settings.ConfigurationSaving.Enabled and ToggleSettings.Flag then
+				Flags[ToggleSettings.Flag] = ToggleSettings
 			end
-			
+
 			return ToggleSettings
 		end
 
@@ -1553,7 +1552,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 						if SliderSettings.CurrentValue ~= NewValue then
 							SliderSettings.Callback(NewValue)
 							SliderSettings.CurrentValue = NewValue
-							SaveConfiguration(Settings.Configuration.FileName)
+							SaveConfiguration(Settings.ConfigurationSaving.FileName)
 						end
 					else
 						TweenService:Create(Slider.Main.Progress, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, Location - Slider.Main.AbsolutePosition.X > 5 and Location - Slider.Main.AbsolutePosition.X or 5, 1, 0)}):Play()
@@ -1567,13 +1566,13 @@ function RayfieldLibrary:CreateWindow(Settings)
 				Slider.Main.Information.Text = tostring(NewVal) .. " " .. SliderSettings.Suffix
 				SliderSettings.Callback(NewVal)
 				SliderSettings.CurrentValue = NewVal
-				SaveConfiguration(Settings.Configuration.FileName)
+				SaveConfiguration(Settings.ConfigurationSaving.FileName)
 			end
-			
-			if Settings.Configuration.Enabled and SliderSettings.Configuration.Flag then
-				Flags[SliderSettings.Configuration.Flag] = SliderSettings
+
+			if Settings.ConfigurationSaving.Enabled and SliderSettings.Flag then
+				Flags[SliderSettings.Flag] = SliderSettings
 			end
-			
+
 			return SliderSettings
 		end
 
@@ -1614,7 +1613,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 	wait(0.1)
 	TweenService:Create(Topbar.Hide, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {ImageTransparency = 0.8}):Play()
 	wait(0.3)
-	
+
 	return Window
 end
 
