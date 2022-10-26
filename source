@@ -30,7 +30,7 @@ local Rayfield = game:GetObjects("rbxassetid://10804731440")[1]
 
 
 if gethui then
-	Rayfield.Parent = gethui
+	Rayfield.Parent = gethui()
 elseif syn.protect_gui then
 	syn.protect_gui(Rayfield)
 	Rayfield.Parent = CoreGui
@@ -41,7 +41,7 @@ else
 end
 
 if gethui then
-	for _, Interface in ipairs(gethui:GetChildren()) do
+	for _, Interface in ipairs(gethui():GetChildren()) do
 		if Interface.Name == Rayfield.Name and Interface ~= Rayfield then
 			Interface.Enabled = false
 			Interface.Name = "Rayfield-Old"
@@ -754,7 +754,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 		local KeyUI = game:GetObjects("rbxassetid://11380036235")[1]
 
 		if gethui then
-			KeyUI.Parent = gethui
+			KeyUI.Parent = gethui()
 		elseif syn.protect_gui then
 			syn.protect_gui(Rayfield)
 			KeyUI.Parent = CoreGui
@@ -763,7 +763,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 		end
 
 		if gethui then
-			for _, Interface in ipairs(gethui:GetChildren()) do
+			for _, Interface in ipairs(gethui():GetChildren()) do
 				if Interface.Name == KeyUI.Name and Interface ~= KeyUI then
 					Interface.Enabled = false
 					Interface.Name = "KeyUI-Old"
