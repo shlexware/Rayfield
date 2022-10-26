@@ -8,8 +8,12 @@ iRay  | Programming
 
 ]]
 
-local Release = "Beta 3"
+
+
+local Release = "Beta 4"
 local NotificationDuration = 6.5
+local ConfigurationFolder = "Rayfield Interface Suite"
+local ConfigurationExtension = ".rfld"
 
 
 
@@ -21,8 +25,6 @@ local HttpService = game:GetService("HttpService")
 local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
-
-local Camera = workspace.CurrentCamera
 
 local Rayfield = game:GetObjects("rbxassetid://10804731440")[1]
 
@@ -52,7 +54,7 @@ else
 end
 
 
-
+local Camera = workspace.CurrentCamera
 local Main = Rayfield.Main
 local Topbar = Main.Topbar
 local Elements = Main.Elements
@@ -62,9 +64,12 @@ local TabList = Main.TabList
 Rayfield.DisplayOrder = 100
 LoadingFrame.Version.Text = Release
 
+local CFileName = nil
+local CEnabled = false
 local Minimised = false
 local Hidden = false
 local Debounce = false
+local Flags = {}
 local NotificationStack = {}
 local Notifications = Rayfield.Notifications
 
@@ -99,6 +104,45 @@ local function AddDraggingFunctionality(DragPoint, Main)
 	end)
 end   
 
+local function PackColor(Color)
+	return {R = Color.R * 255, G = Color.G * 255, B = Color.B * 255}
+end    
+
+local function UnpackColor(Color)
+	return Color3.fromRGB(Color.R, Color.G, Color.B)
+end
+
+local function LoadConfiguration(Configuration)
+	local Data = HttpService:JSONDecode(Configuration)
+	table.foreach(Data, function(FlagName, FlagValue)
+		if Flags[FlagName] then
+			spawn(function() 
+				if Flags[FlagName].Type == "Colorpicker" then
+					Flags[FlagName]:Set(UnpackColor(FlagValue))
+				else
+					if Flags[FlagName].CurrentValue or Flags[FlagName].CurrentKeybind or Flags[FlagName].CurrentOption ~= FlagValue then Flags[FlagName]:Set(FlagValue) end
+				end    
+			end)
+		else
+			RayfieldLibrary:Notify("Flag Error","Rayfield was unable to find '"..FlagName.. "'' in the current script")
+		end
+	end)
+end
+
+local function SaveConfiguration(Name)
+	local Data = {}
+	for i,v in pairs(Flags) do
+		if v.Configuration.Enabled then
+			if v.Type == "Colorpicker" then
+				Data[i] = PackColor(v.CurrentValue)
+			else
+				Data[i] = v.CurrentValue or v.CurrentKeybind or v.CurrentOption
+			end
+		end	
+	end
+	writefile(ConfigurationFolder .. "/" .. Name .. ConfigurationExtension, tostring(HttpService:JSONEncode(Data)))
+end
+
 function FigureNotifications()
 	local stacksize = 1
 
@@ -121,7 +165,6 @@ function FigureNotifications()
 end
 
 local neon = (function() -- Open sourced neon module
-	-- fractality
 	local module = {}
 
 	do
@@ -140,7 +183,7 @@ local neon = (function() -- Open sourced neon module
 	root.Name = 'neon'
 
 
-	local GenUid; do -- Generate unique names for RenderStepped bindings
+	local GenUid; do
 		local id = 0
 		function GenUid()
 			id = id + 1
@@ -152,7 +195,7 @@ local neon = (function() -- Open sourced neon module
 		local acos, max, pi, sqrt = math.acos, math.max, math.pi, math.sqrt
 		local sz = 0.2
 
-		function DrawTriangle(v1, v2, v3, p0, p1) -- I think Stravant wrote this function
+		function DrawTriangle(v1, v2, v3, p0, p1)
 			local s1 = (v1 - v2).magnitude
 			local s2 = (v2 - v3).magnitude
 			local s3 = (v3 - v1).magnitude
@@ -225,7 +268,6 @@ local neon = (function() -- Open sourced neon module
 		end
 	end
 
-	-- Create a part binding for a GuiObject.
 	function module:BindFrame(frame, properties)
 		if binds[frame] then
 			return binds[frame].parts
@@ -236,7 +278,7 @@ local neon = (function() -- Open sourced neon module
 		local f = Instance.new('Folder', root)
 		f.Name = frame.Name
 
-		local parents = {} -- construct hierarchy tree for rotation
+		local parents = {}
 		do
 			local function add(child)
 				if child:IsA'GuiObject' then
@@ -249,7 +291,6 @@ local neon = (function() -- Open sourced neon module
 
 		local function UpdateOrientation(fetchProps)
 			local zIndex = 1 - 0.05*frame.ZIndex
-			-- the transparency inversion bug still surfaces when there's z-fighting
 			local tl, br = frame.AbsolutePosition, frame.AbsolutePosition + frame.AbsoluteSize
 			local tr, bl = Vector2.new(br.x, tl.y), Vector2.new(tl.x, br.y)
 			do
@@ -296,7 +337,6 @@ local neon = (function() -- Open sourced neon module
 		return binds[frame].parts
 	end
 
-	-- Applies the `properties` table to bound parts.
 	function module:Modify(frame, properties)
 		local parts = module:GetBoundParts(frame)
 		if parts then
@@ -308,7 +348,6 @@ local neon = (function() -- Open sourced neon module
 		end
 	end
 
-	-- Removes the part binding from a gui object if one exists.
 	function module:UnbindFrame(frame)
 		local cb = binds[frame]
 		if cb then
@@ -320,12 +359,10 @@ local neon = (function() -- Open sourced neon module
 		end
 	end
 
-	-- Returns true if a part binding exists for the gui object.
 	function module:HasBinding(frame)
 		return binds[frame] ~= nil
 	end
 
-	-- Returns an array using this.
 	function module:GetBoundParts(frame)
 		return binds[frame] and binds[frame].parts
 	end
@@ -398,8 +435,6 @@ function RayfieldLibrary:Notify(Title,Content,Image)
 		wait(NotificationDuration - 0.5)
 
 
-
-		-- animation for close
 		TweenService:Create(Notification.Title, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Position = UDim2.new(0.47, 0,0.234, 0)}):Play()
 		TweenService:Create(Notification.Description, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {Position = UDim2.new(0.528, 0,0.637, 0)}):Play()
 		TweenService:Create(Notification, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 280, 0, 83)}):Play()
@@ -411,7 +446,6 @@ function RayfieldLibrary:Notify(Title,Content,Image)
 		TweenService:Create(Notification.Title, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {TextTransparency = 0.4}):Play()
 		TweenService:Create(Notification.Description, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {TextTransparency = 0.5}):Play()
 		wait(0.05)
-		-- Closing
 
 		Notification:TweenPosition(UDim2.new(1.5,0,Notification.Position.Y.Scale,0),'In','Quint',0.8,true)
 		for a,b in pairs(NotificationStack) do
@@ -648,7 +682,7 @@ function Minimise()
 	Debounce = false
 end
 
-function RayfieldLibrary:CreateWindow(Settings) --Name = "Phantom Forces", SaveConfiguration = true, ConfigurationFolder = "PhantomForces" (defaults to placeid)
+function RayfieldLibrary:CreateWindow(Settings)
 	local Passthrough = false
 	Topbar.Title.Text = Settings.Name
 	Main.Size = UDim2.new(0, 450, 0, 260)
@@ -663,6 +697,15 @@ function RayfieldLibrary:CreateWindow(Settings) --Name = "Phantom Forces", SaveC
 	Topbar.Visible = false
 	Elements.Visible = false
 	LoadingFrame.Visible = true
+	
+	CFileName = Settings.Configuration.FileName or game.PlaceId
+	CEnabled = Settings.Configuration.Enabled or false
+	
+	if Settings.Configuration.Enabled then
+		if not isfolder(ConfigurationFolder) then
+			makefolder(ConfigurationFolder)
+		end	
+	end
 
 	AddDraggingFunctionality(Topbar,Main)
 
@@ -944,6 +987,7 @@ function RayfieldLibrary:CreateWindow(Settings) --Name = "Phantom Forces", SaveC
 					TweenService:Create(Button.ElementIndicator, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {TextTransparency = 0.9}):Play()
 					TweenService:Create(Button.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
 				else
+					SaveConfiguration(Settings.Configuration.FileName)
 					TweenService:Create(Button, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(45, 45, 45)}):Play()
 					TweenService:Create(Button.ElementIndicator, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
 					TweenService:Create(Button.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
@@ -1080,6 +1124,7 @@ function RayfieldLibrary:CreateWindow(Settings) --Name = "Phantom Forces", SaveC
 				if InputSettings.RemoveTextAfterFocusLost then
 					Input.InputFrame.InputBox.Text = ""
 				end
+				SaveConfiguration(Settings.Configuration.FileName)
 			end)
 
 			Input.MouseEnter:Connect(function()
@@ -1221,16 +1266,18 @@ function RayfieldLibrary:CreateWindow(Settings) --Name = "Phantom Forces", SaveC
 						wait(0.35)
 						Dropdown.List.Visible = false
 						Debounce = false	
-
+						SaveConfiguration(Settings.Configuration.FileName)
 					end
 				end)
+			end
+			
+			if Settings.Configuration.Enabled and DropdownSettings.Configuration.Flag then
+				Flags[DropdownSettings.Configuration.Flag] = DropdownSettings
 			end
 		end
 
 		-- Keybind
 		function Tab:CreateKeybind(KeybindSettings)
-			local KeybindValue = {}
-
 			local CheckingForKey = false
 			local Keybind = Elements.Template.Keybind:Clone()
 			Keybind.Name = KeybindSettings.Name
@@ -1257,6 +1304,7 @@ function RayfieldLibrary:CreateWindow(Settings) --Name = "Phantom Forces", SaveC
 				CheckingForKey = false
 				if Keybind.KeybindFrame.KeybindBox.Text == nil or "" then
 					Keybind.KeybindFrame.KeybindBox.Text = KeybindSettings.CurrentKeybind
+					SaveConfiguration(Settings.Configuration.FileName)
 				end
 			end)
 
@@ -1276,6 +1324,8 @@ function RayfieldLibrary:CreateWindow(Settings) --Name = "Phantom Forces", SaveC
 						Keybind.KeybindFrame.KeybindBox.Text = tostring(NewKeyNoEnum)
 						KeybindSettings.CurrentKeybind = tostring(NewKeyNoEnum)
 						Keybind.KeybindFrame.KeybindBox:ReleaseFocus()
+						SaveConfiguration(Settings.Configuration.FileName)
+						print("yo")
 					end
 				elseif (input.KeyCode == Enum.KeyCode[KeybindSettings.CurrentKeybind] and not processed) then
 					local Held = true
@@ -1309,13 +1359,19 @@ function RayfieldLibrary:CreateWindow(Settings) --Name = "Phantom Forces", SaveC
 				TweenService:Create(Keybind.KeybindFrame, TweenInfo.new(0.55, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, Keybind.KeybindFrame.KeybindBox.TextBounds.X + 24, 0, 30)}):Play()
 			end)
 
-			function KeybindValue:Set(NewKeybind)
+			function KeybindSettings:Set(NewKeybind)
+				print("set")
 				Keybind.KeybindFrame.KeybindBox.Text = tostring(NewKeybind)
 				KeybindSettings.CurrentKeybind = tostring(NewKeybind)
 				Keybind.KeybindFrame.KeybindBox:ReleaseFocus()
+				SaveConfiguration(Settings.Configuration.FileName)
 			end
-
-			return KeybindValue
+			
+			if Settings.Configuration.Enabled and KeybindSettings.Configuration.Flag then
+				Flags[KeybindSettings.Configuration.Flag] = KeybindSettings
+			end
+			
+			return KeybindSettings
 		end
 
 		-- Toggle
@@ -1337,21 +1393,15 @@ function RayfieldLibrary:CreateWindow(Settings) --Name = "Phantom Forces", SaveC
 			TweenService:Create(Toggle.Title, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()	
 
 			if not ToggleSettings.CurrentValue then
-				TweenService:Create(Toggle.Switch.Indicator, TweenInfo.new(0.45, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {Position = UDim2.new(1, -40, 0.5, 0)}):Play()
-				TweenService:Create(Toggle.Switch.Indicator, TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {Size = UDim2.new(0,12,0,12)}):Play()
-				TweenService:Create(Toggle.Switch.Indicator.UIStroke, TweenInfo.new(0.55, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Color = Color3.fromRGB(125, 125, 125)}):Play()
-				TweenService:Create(Toggle.Switch.Indicator, TweenInfo.new(0.8, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(100, 100, 100)}):Play()
-				TweenService:Create(Toggle.Switch.UIStroke, TweenInfo.new(0.55, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Color = Color3.fromRGB(65,65,65)}):Play()
-				wait(0.05)
-				TweenService:Create(Toggle.Switch.Indicator, TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {Size = UDim2.new(0,17,0,17)}):Play()
+				Toggle.Switch.Indicator.Position = UDim2.new(1, -40, 0.5, 0)
+				Toggle.Switch.Indicator.UIStroke.Color = Color3.fromRGB(125, 125, 125)
+				Toggle.Switch.Indicator.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+				Toggle.Switch.UIStroke.Color = Color3.fromRGB(65, 65, 65)
 			else
-				TweenService:Create(Toggle.Switch.Indicator, TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {Position = UDim2.new(1, -20, 0.5, 0)}):Play()
-				TweenService:Create(Toggle.Switch.Indicator, TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {Size = UDim2.new(0,12,0,12)}):Play()
-				TweenService:Create(Toggle.Switch.Indicator.UIStroke, TweenInfo.new(0.55, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Color = Color3.fromRGB(0, 170, 255)}):Play()
-				TweenService:Create(Toggle.Switch.Indicator, TweenInfo.new(0.8, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(0, 146, 214)}):Play()
-				TweenService:Create(Toggle.Switch.UIStroke, TweenInfo.new(0.55, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Color = Color3.fromRGB(100,100,100)}):Play()
-				wait(0.05)
-				TweenService:Create(Toggle.Switch.Indicator, TweenInfo.new(0.45, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {Size = UDim2.new(0,17,0,17)}):Play()	
+				Toggle.Switch.Indicator.Position = UDim2.new(1, -20, 0.5, 0)
+				Toggle.Switch.Indicator.UIStroke.Color = Color3.fromRGB(0, 170, 255)
+				Toggle.Switch.Indicator.BackgroundColor3 = Color3.fromRGB(0, 146, 214)
+				Toggle.Switch.UIStroke.Color = Color3.fromRGB(100, 100, 100)
 			end
 
 			Toggle.MouseEnter:Connect(function()
@@ -1394,8 +1444,10 @@ function RayfieldLibrary:CreateWindow(Settings) --Name = "Phantom Forces", SaveC
 					TweenService:Create(Toggle.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 0}):Play()		
 				end
 				ToggleSettings.Callback(ToggleSettings.CurrentValue)
+				SaveConfiguration(Settings.Configuration.FileName)
 			end)
-			function ToggleValue:Set(NewToggleValue)
+			
+			function ToggleSettings:Set(NewToggleValue)
 				if NewToggleValue then
 					ToggleSettings.CurrentValue = true
 					TweenService:Create(Toggle, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(45, 45, 45)}):Play()
@@ -1427,14 +1479,19 @@ function RayfieldLibrary:CreateWindow(Settings) --Name = "Phantom Forces", SaveC
 					TweenService:Create(Toggle.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 0}):Play()	
 				end
 				ToggleSettings.Callback(ToggleSettings.CurrentValue)
+				SaveConfiguration(Settings.Configuration.FileName)
 			end
-
-			return ToggleValue
+			
+			
+			if Settings.Configuration.Enabled and ToggleSettings.Configuration.Flag then
+				Flags[ToggleSettings.Configuration.Flag] = ToggleSettings
+			end
+			
+			return ToggleSettings
 		end
 
 		-- Slider
 		function Tab:CreateSlider(SliderSettings)
-			local SliderValue = {}
 
 			local Slider = Elements.Template.Slider:Clone()
 			Slider.Name = SliderSettings.Name
@@ -1496,6 +1553,7 @@ function RayfieldLibrary:CreateWindow(Settings) --Name = "Phantom Forces", SaveC
 						if SliderSettings.CurrentValue ~= NewValue then
 							SliderSettings.Callback(NewValue)
 							SliderSettings.CurrentValue = NewValue
+							SaveConfiguration(Settings.Configuration.FileName)
 						end
 					else
 						TweenService:Create(Slider.Main.Progress, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, Location - Slider.Main.AbsolutePosition.X > 5 and Location - Slider.Main.AbsolutePosition.X or 5, 1, 0)}):Play()
@@ -1504,14 +1562,19 @@ function RayfieldLibrary:CreateWindow(Settings) --Name = "Phantom Forces", SaveC
 				end)
 			end)
 
-			function SliderValue:Set(NewVal)
+			function SliderSettings:Set(NewVal)
 				TweenService:Create(Slider.Main.Progress, TweenInfo.new(0.45, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, Slider.Main.AbsoluteSize.X * ((NewVal + SliderSettings.Range[1]) / (SliderSettings.Range[2] - SliderSettings.Range[1])) > 5 and Slider.Main.AbsoluteSize.X * (NewVal / (SliderSettings.Range[2] - SliderSettings.Range[1])) or 5, 1, 0)}):Play()
 				Slider.Main.Information.Text = tostring(NewVal) .. " " .. SliderSettings.Suffix
 				SliderSettings.Callback(NewVal)
 				SliderSettings.CurrentValue = NewVal
+				SaveConfiguration(Settings.Configuration.FileName)
 			end
-
-			return SliderValue
+			
+			if Settings.Configuration.Enabled and SliderSettings.Configuration.Flag then
+				Flags[SliderSettings.Configuration.Flag] = SliderSettings
+			end
+			
+			return SliderSettings
 		end
 
 
@@ -1551,9 +1614,11 @@ function RayfieldLibrary:CreateWindow(Settings) --Name = "Phantom Forces", SaveC
 	wait(0.1)
 	TweenService:Create(Topbar.Hide, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {ImageTransparency = 0.8}):Play()
 	wait(0.3)
-
+	
 	return Window
 end
+
+
 
 function RayfieldLibrary:Destroy()
 	Rayfield:Destroy()
@@ -1606,6 +1671,18 @@ for _, TopbarButton in ipairs(Topbar:GetChildren()) do
 
 		TopbarButton.MouseButton1Click:Connect(function()
 			TweenService:Create(TopbarButton, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {ImageTransparency = 0.8}):Play()
+		end)
+	end
+end
+
+
+function RayfieldLibrary:LoadConfiguration()
+	if CEnabled then
+		pcall(function()
+			if isfile(ConfigurationFolder .. "/" .. CFileName .. ConfigurationExtension) then
+				LoadConfiguration(readfile(ConfigurationFolder .. "/" .. CFileName .. ConfigurationExtension))
+				RayfieldLibrary:Notify("Configuration Loaded","The configuration file for this game has been loaded from a previous session")
+			end
 		end)
 	end
 end
