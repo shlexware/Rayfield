@@ -28,17 +28,20 @@ local CoreGui = game:GetService("CoreGui")
 
 local Rayfield = game:GetObjects("rbxassetid://10804731440")[1]
 
+
 if gethui then
-	Rayfield.Parent = gethui()
+	Rayfield.Parent = gethui
 elseif syn.protect_gui then
 	syn.protect_gui(Rayfield)
 	Rayfield.Parent = CoreGui
+elseif CoreGui:FindFirstChild("RobloxGui") then
+	Rayfield.Parent = CoreGui:FindFirstChild("RobloxGui")
 else
 	Rayfield.Parent = CoreGui
 end
 
 if gethui then
-	for _, Interface in ipairs(gethui():GetChildren()) do
+	for _, Interface in ipairs(gethui:GetChildren()) do
 		if Interface.Name == Rayfield.Name and Interface ~= Rayfield then
 			Interface.Enabled = false
 			Interface.Name = "Rayfield-Old"
@@ -64,6 +67,7 @@ local TabList = Main.TabList
 Rayfield.DisplayOrder = 100
 LoadingFrame.Version.Text = Release
 
+local SecureMode = nil
 local CFileName = nil
 local CEnabled = false
 local Minimised = false
@@ -176,9 +180,15 @@ local neon = (function() -- Open sourced neon module
 			continued = IsNotNaN(Camera:ScreenPointToRay(0,0).Origin.x)
 		end
 	end
-
+	local RootParent = Camera
+	if not getgenv().SecureMode then
+		RootParent = Camera
+	else 
+		RootParent = nil
+	end
+	
 	local binds = {}
-	local root = Instance.new('Folder', Camera)
+	local root = Instance.new('Folder', RootParent)
 	root.Name = 'neon'
 
 
@@ -268,6 +278,7 @@ local neon = (function() -- Open sourced neon module
 	end
 
 	function module:BindFrame(frame, properties)
+		if RootParent == nil then return end
 		if binds[frame] then
 			return binds[frame].parts
 		end
@@ -348,6 +359,7 @@ local neon = (function() -- Open sourced neon module
 	end
 
 	function module:UnbindFrame(frame)
+		if RootParent == nil then return end
 		local cb = binds[frame]
 		if cb then
 			RunService:UnbindFromRenderStep(cb.uid)
@@ -370,6 +382,7 @@ local neon = (function() -- Open sourced neon module
 	return module
 
 end)()
+--end
 
 function RayfieldLibrary:Notify(Title,Content,Image)
 	spawn(function()
@@ -713,6 +726,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 		end
 	end)
 
+	SecureMode = Settings.SecureMode or false
 
 	AddDraggingFunctionality(Topbar,Main)
 
@@ -730,7 +744,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 		local KeyUI = game:GetObjects("rbxassetid://11380036235")[1]
 
 		if gethui then
-			KeyUI.Parent = gethui()
+			KeyUI.Parent = gethui
 		elseif syn.protect_gui then
 			syn.protect_gui(Rayfield)
 			KeyUI.Parent = CoreGui
@@ -739,7 +753,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 		end
 
 		if gethui then
-			for _, Interface in ipairs(gethui():GetChildren()) do
+			for _, Interface in ipairs(gethui:GetChildren()) do
 				if Interface.Name == KeyUI.Name and Interface ~= KeyUI then
 					Interface.Enabled = false
 					Interface.Name = "KeyUI-Old"
