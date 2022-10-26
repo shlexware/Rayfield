@@ -180,11 +180,16 @@ local neon = (function() -- Open sourced neon module
 		end
 	end
 	local RootParent = Camera
-	if not getgenv().SecureMode then
+	if getgenv().SecureMode == nil then
 		RootParent = Camera
-	else 
-		RootParent = nil
+	else
+		if not getgenv().SecureMode then
+			RootParent = Camera
+		else 
+			RootParent = nil
+		end
 	end
+	
 	
 	local binds = {}
 	local root = Instance.new('Folder', RootParent)
@@ -435,8 +440,16 @@ function RayfieldLibrary:Notify(Title,Content,Image)
 
 
 		-- Requires Graphics Level 8-10
-
-		TweenService:Create(Notification, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.3}):Play()
+		if getgenv().SecureMode == nil then
+			TweenService:Create(Notification, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.3}):Play()
+		else
+			if not getgenv().SecureMode then
+				TweenService:Create(Notification, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.3}):Play()
+			else 
+				TweenService:Create(Notification, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play()
+			end
+		end
+		
 		if Rayfield.Name == "Rayfield" then
 			neon:BindFrame(Notification.BlurModule, {
 				Transparency = 0.98;
