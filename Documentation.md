@@ -174,7 +174,7 @@ local Dropdown = Tab:CreateDropdown({
 	end,
 })
 ```
-### Updating a Slider
+### Updating a Dropdown
 ```lua
 Dropdown:Set("Option 2") -- The new option value
 ```
