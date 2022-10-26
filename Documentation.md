@@ -1,14 +1,20 @@
 # Rayfield Interface Suite
 This is the written documentation for Rayfield Interface Suite
 
-Last updated for the Beta 3 release
+Last updated for the Beta 4 release
 
 ## Booting the Library
 ```lua
 local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Rayfield/main/source'))()
 ```
 
+## Enabling Configuration Saving
+Enable ConfigurationSaving in the CreateWindow function
+Choose an appropiate FileName in the CreateWindow function
+Choose an unique flag identifier for each element you create
+Place `Rayfield:LoadConfiguration()` at the bottom of all your code
 
+Rayfield will now automatically save and load your configuration
 
 ## Creating a Window
 ```lua
@@ -16,6 +22,10 @@ local Window = Rayfield:CreateWindow({
 Name = "Rayfield Example Window",
 LoadingTitle = "Rayfield Interface Suite",
 LoadingSubtitle = "by Sirius",
+ConfigurationSaving = {
+	Enabled = true,
+	FileName = "Big Hub",
+}
 KeySystem = false, -- Set this to true to use our key system
 KeySettings = {
 	Title = "Sirius Hub",
@@ -64,6 +74,7 @@ Button:Set("Button Example")
 local Toggle = Tab:CreateToggle({
 	Name = "Toggle Example",
 	CurrentValue = false,
+	Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
 	Callback = function(Value)
 		-- The function that takes place when the toggle is pressed
     		-- The variable (Value) is a boolean on whether the toggle is true or false
@@ -76,7 +87,7 @@ Toggle:Set(false)
 ```
 
 ## Creating a Color Picker
-Not in Beta 3
+Not in Beta 4
 
 
 ## Creating a Slider
@@ -87,6 +98,7 @@ local Slider = Tab:CreateSlider({
 	Increment = 10,
 	Suffix = "Bananas",
 	CurrentValue = 10,
+	Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
 	Callback = function(Value)
 		-- The function that takes place when the slider changes
     		-- The variable (Value) is a number which correlates to the value the slider is currently at
@@ -137,6 +149,7 @@ local Keybind = Tab:CreateKeybind({
 	Name = "Keybind Example",
 	CurrentKeybind = "Q",
 	HoldToInteract = false,
+	Flag = "Keybind1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
 	Callback = function(Keybind)
 		-- The function that takes place when the keybind is pressed
     		-- The variable (Keybind) is a boolean for whether the keybind is being held or not (HoldToInteract needs to be true)
@@ -153,12 +166,17 @@ Keybind:Set("RightCtrl") -- Keybind (string)
 local Dropdown = Tab:CreateDropdown({
 	Name = "Dropdown Example",
 	Options = {"Option 1","Option 2"},
-	CurrentOption = "hi",
+	CurrentOption = "Option 1",
+	Flag = "Dropdown1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
 	Callback = function(Option)
-	  -- The function that takes place when the selected option is changed
+	  	  -- The function that takes place when the selected option is changed
     	  -- The variable (Option) is a string for the value that the dropdown was changed to
 	end,
 })
+```
+### Updating a Slider
+```lua
+Dropdown:Set("Option 2") -- The new option value
 ```
 
 
