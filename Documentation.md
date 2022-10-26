@@ -13,6 +13,7 @@ If the game you're trying to run Rayfield Interface Suite on, is detecting or cr
 - Place `getgenv().SecureMode = true` above the initial Rayfield loadstring
 
 Rayfield will now use Secure Mode and attempt to reduce detection
+###### This may cause some elements of the UI to look lower quality or may increase loading times slightly
 
 ## Enabling Configuration Saving
 - Enable ConfigurationSaving in the CreateWindow function
