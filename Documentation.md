@@ -15,7 +15,7 @@ If the game you're trying to run Rayfield Interface Suite on, is detecting or cr
 Rayfield will now use Secure Mode and attempt to reduce detection
 - Note: This may cause some elements of the UI to look lower quality or may increase loading times slightly
 
-## Enabling Configuration Saving
+### Enabling Configuration Saving
 - Enable ConfigurationSaving in the CreateWindow function
 - Choose an appropiate FileName in the CreateWindow function
 - Choose an unique flag identifier for each supported element you create
