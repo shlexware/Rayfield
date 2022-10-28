@@ -1581,7 +1581,6 @@ function RayfieldLibrary:CreateWindow(Settings)
 			end)
 
 			Slider.Main.Interact.MouseButton1Down:Connect(function(X)
-				pr
 				local Current = Slider.Main.Progress.AbsolutePosition.X + Slider.Main.Progress.AbsoluteSize.X
 				local Start = Current
 				local Location = X
