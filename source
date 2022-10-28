@@ -394,14 +394,17 @@ function RayfieldLibrary:Notify(Title,Content,Image)
 		Notification.Parent = Notifications
 		Notification.Name = Title
 		Notification.Visible = true
-
-		local blurlight = Instance.new("DepthOfFieldEffect",game:GetService("Lighting"))
-		blurlight.Enabled = true
-		blurlight.FarIntensity = 0
-		blurlight.FocusDistance = 51.6
-		blurlight.InFocusRadius = 50
-		blurlight.NearIntensity = 1
-		game:GetService("Debris"):AddItem(script,0)
+		
+		if not getgenv().SecureMode then
+			local blurlight = Instance.new("DepthOfFieldEffect",game:GetService("Lighting"))
+			blurlight.Enabled = true
+			blurlight.FarIntensity = 0
+			blurlight.FocusDistance = 51.6
+			blurlight.InFocusRadius = 50
+			blurlight.NearIntensity = 1
+			game:GetService("Debris"):AddItem(script,0)
+		end
+		
 
 		Notification.Title.Text = Title or "Unknown"
 		Notification.Title.TextTransparency = 1
@@ -1578,6 +1581,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 			end)
 
 			Slider.Main.Interact.MouseButton1Down:Connect(function(X)
+				pr
 				local Current = Slider.Main.Progress.AbsolutePosition.X + Slider.Main.Progress.AbsoluteSize.X
 				local Start = Current
 				local Location = X
