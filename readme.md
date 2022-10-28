@@ -1,3 +1,1 @@
-![tes](https://user-images.githubusercontent.com/77512805/198734188-3a653698-6e3b-491e-88b4-e4713083c816.png)
-
-
+[![rayfield](https://user-images.githubusercontent.com/77512805/197843157-3485a6e4-7b18-4372-8277-f3a2e7bd0317.png)](https://discord.gg/sirius)
