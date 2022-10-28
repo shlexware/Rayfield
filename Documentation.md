@@ -26,20 +26,20 @@ Rayfield will now automatically save and load your configuration
 ## Creating a Window
 ```lua
 local Window = Rayfield:CreateWindow({
-Name = "Rayfield Example Window",
-LoadingTitle = "Rayfield Interface Suite",
-LoadingSubtitle = "by Sirius",
-ConfigurationSaving = {
-	Enabled = true,
-	FileName = "Big Hub",
-},
-KeySystem = false, -- Set this to true to use our key system
-KeySettings = {
-	Title = "Sirius Hub",
-	Subtitle = "Key System",
-	Note = "Join the discord (discord.gg/sirius)",
-	Key = "ABCDEF"
-}
+	Name = "Rayfield Example Window",
+	LoadingTitle = "Rayfield Interface Suite",
+	LoadingSubtitle = "by Sirius",
+	ConfigurationSaving = {
+		Enabled = true,
+		FileName = "Big Hub",
+	},
+	KeySystem = false, -- Set this to true to use our key system
+	KeySettings = {
+		Title = "Sirius Hub",
+		Subtitle = "Key System",
+		Note = "Join the discord (discord.gg/sirius)",
+		Key = "ABCDEF"
+	}
 })
 ```
 
