@@ -482,11 +482,11 @@ function RayfieldLibrary:Notify(Title,Content,Image)
 			end
 		end
 		wait(1.35)
-		Notification:Destroy()
 		if not getgenv().SecureMode then
 			neon:UnbindFrame(Notification.BlurModule)
 			blurlight:Destroy()
 		end
+		Notification:Destroy()
 		FigureNotifications()
 	end)
 end
