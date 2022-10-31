@@ -31,8 +31,8 @@ local Window = Rayfield:CreateWindow({
 	LoadingSubtitle = "by Sirius",
 	ConfigurationSaving = {
 		Enabled = true,
-		FolderName = "Big Hub",
-		FileName = "Big Paintball"
+		FolderName = "Rayfield Interface Suite",
+		FileName = "Big Hub"
 	},
 	KeySystem = false, -- Set this to true to use our key system
 	KeySettings = {
