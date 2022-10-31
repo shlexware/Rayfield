@@ -188,6 +188,8 @@ local Dropdown = Tab:CreateDropdown({
 Dropdown:Set("Option 2") -- The new option value
 ```
 
+## Check the value of an existing element
+To check the current value of an existing element, using the variable, you can do `ElementName.CurrentValue`, if it's a keybind or dropdown, you will need to use `KeybindName.CurrentKeybind` or `DropdownName.CurrentOption`
 
 
 ## Destroying the Interface
