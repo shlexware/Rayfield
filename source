@@ -1064,14 +1064,13 @@ function RayfieldLibrary:CreateWindow(Settings)
 			Button.Interact.MouseButton1Click:Connect(function()
 				local Success, Response = pcall(ButtonSettings.Callback)
 				if not Success then
-					local TitleBefore = Button.Title.Text
 					TweenService:Create(Button, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 					TweenService:Create(Button.ElementIndicator, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
 					TweenService:Create(Button.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 					Button.Title.Text = "Callback Error"
-					print("Rayfield | "..Button.Title.Text.." Callback Error " ..tostring(Response))
+					print("Rayfield | "..ButtonSettings.Name.." Callback Error " ..tostring(Response))
 					wait(0.5)
-					Button.Title.Text = TitleBefore
+					Button.Title.Text = ButtonSettings.Name
 					TweenService:Create(Button, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(35, 35, 35)}):Play()
 					TweenService:Create(Button.ElementIndicator, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {TextTransparency = 0.9}):Play()
 					TweenService:Create(Button.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
@@ -1215,13 +1214,12 @@ function RayfieldLibrary:CreateWindow(Settings)
 					InputSettings.Callback(Input.InputFrame.InputBox.Text)
 				end)
 				if not Success then
-					local TitleBefore = Input.Title.Text
 					TweenService:Create(Input, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 					TweenService:Create(Input.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 					Input.Title.Text = "Callback Error"
-					print("Rayfield | "..Input.Title.Text.." Callback Error " ..tostring(Response))
+					print("Rayfield | "..InputSettings.Name.." Callback Error " ..tostring(Response))
 					wait(0.5)
-					Input.Title.Text = TitleBefore
+					Input.Title.Text = InputSettings.Name
 					TweenService:Create(Input, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(35, 35, 35)}):Play()
 					TweenService:Create(Input.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
 				end
@@ -1350,13 +1348,12 @@ function RayfieldLibrary:CreateWindow(Settings)
 							DropdownSettings.Callback(Option)
 						end)
 						if not Success then
-							local TitleBefore = Dropdown.Title.Text
 							TweenService:Create(Dropdown, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 							TweenService:Create(Dropdown.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 							Dropdown.Title.Text = "Callback Error"
-							print("Rayfield | "..Dropdown.Title.Text.." Callback Error " ..tostring(Response))
+							print("Rayfield | "..DropdownSettings.Name.." Callback Error " ..tostring(Response))
 							wait(0.5)
-							Dropdown.Title.Text = TitleBefore
+							Dropdown.Title.Text = DropdownSettings.Name
 							TweenService:Create(Dropdown, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(35, 35, 35)}):Play()
 							TweenService:Create(Dropdown.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
 						end
@@ -1398,13 +1395,12 @@ function RayfieldLibrary:CreateWindow(Settings)
 					DropdownSettings.Callback(NewOption)
 				end)
 				if not Success then
-					local TitleBefore = Dropdown.Title.Text
 					TweenService:Create(Dropdown, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 					TweenService:Create(Dropdown.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 					Dropdown.Title.Text = "Callback Error"
-					print("Rayfield | "..Dropdown.Title.Text.." Callback Error " ..tostring(Response))
+					print("Rayfield | "..DropdownSettings.Name.." Callback Error " ..tostring(Response))
 					wait(0.5)
-					Dropdown.Title.Text = TitleBefore
+					Dropdown.Title.Text = DropdownSettings.Name
 					TweenService:Create(Dropdown, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(35, 35, 35)}):Play()
 					TweenService:Create(Dropdown.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
 				end
@@ -1494,13 +1490,12 @@ function RayfieldLibrary:CreateWindow(Settings)
 					if not KeybindSettings.HoldToInteract then
 						local Success, Response = pcall(KeybindSettings.Callback)
 						if not Success then
-							local TitleBefore = Keybind.Title.Text
 							TweenService:Create(Keybind, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 							TweenService:Create(Keybind.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 							Keybind.Title.Text = "Callback Error"
-							print("Rayfield | "..Keybind.Title.Text.." Callback Error " ..tostring(Response))
+							print("Rayfield | "..KeybindSettings.Name.." Callback Error " ..tostring(Response))
 							wait(0.5)
-							Keybind.Title.Text = TitleBefore
+							Keybind.Title.Text = KeybindSettings.Name
 							TweenService:Create(Keybind, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(35, 35, 35)}):Play()
 							TweenService:Create(Keybind.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
 						end
@@ -1584,13 +1579,12 @@ function RayfieldLibrary:CreateWindow(Settings)
 						ToggleSettings.Callback(ToggleSettings.CurrentValue)
 					end)
 					if not Success then
-						local TitleBefore = Toggle.Title.Text
 						TweenService:Create(Toggle, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 						TweenService:Create(Toggle.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 						Toggle.Title.Text = "Callback Error"
-						print("Rayfield | "..Toggle.Title.Text.." Callback Error " ..tostring(Response))
+						print("Rayfield | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
 						wait(0.5)
-						Toggle.Title.Text = TitleBefore
+						Toggle.Title.Text = ToggleSettings.Name
 						TweenService:Create(Toggle, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(35, 35, 35)}):Play()
 						TweenService:Create(Toggle.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
 					end
@@ -1613,13 +1607,12 @@ function RayfieldLibrary:CreateWindow(Settings)
 						ToggleSettings.Callback(ToggleSettings.CurrentValue)
 					end)
 					if not Success then
-						local TitleBefore = Toggle.Title.Text
 						TweenService:Create(Toggle, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 						TweenService:Create(Toggle.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 						Toggle.Title.Text = "Callback Error"
-						print("Rayfield | "..Toggle.Title.Text.." Callback Error " ..tostring(Response))
+						print("Rayfield | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
 						wait(0.5)
-						Toggle.Title.Text = TitleBefore
+						Toggle.Title.Text = ToggleSettings.Name
 						TweenService:Create(Toggle, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(35, 35, 35)}):Play()
 						TweenService:Create(Toggle.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
 					end
@@ -1647,13 +1640,12 @@ function RayfieldLibrary:CreateWindow(Settings)
 						ToggleSettings.Callback(ToggleSettings.CurrentValue)
 					end)
 					if not Success then
-						local TitleBefore = Toggle.Title.Text
 						TweenService:Create(Toggle, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 						TweenService:Create(Toggle.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 						Toggle.Title.Text = "Callback Error"
-						print("Rayfield | "..Toggle.Title.Text.." Callback Error " ..tostring(Response))
+						print("Rayfield | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
 						wait(0.5)
-						Toggle.Title.Text = TitleBefore
+						Toggle.Title.Text = ToggleSettings.Name
 						TweenService:Create(Toggle, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(35, 35, 35)}):Play()
 						TweenService:Create(Toggle.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
 					end
@@ -1675,13 +1667,12 @@ function RayfieldLibrary:CreateWindow(Settings)
 						ToggleSettings.Callback(ToggleSettings.CurrentValue)
 					end)
 					if not Success then
-						local TitleBefore = Toggle.Title.Text
 						TweenService:Create(Toggle, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 						TweenService:Create(Toggle.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 						Toggle.Title.Text = "Callback Error"
-						print("Rayfield | "..Toggle.Title.Text.." Callback Error " ..tostring(Response))
+						print("Rayfield | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
 						wait(0.5)
-						Toggle.Title.Text = TitleBefore
+						Toggle.Title.Text = ToggleSettings.Name
 						TweenService:Create(Toggle, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(35, 35, 35)}):Play()
 						TweenService:Create(Toggle.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
 					end
@@ -1703,13 +1694,12 @@ function RayfieldLibrary:CreateWindow(Settings)
 					ToggleSettings.Callback(ToggleSettings.CurrentValue)
 				end)
 				if not Success then
-					local TitleBefore = Toggle.Title.Text
 					TweenService:Create(Toggle, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 					TweenService:Create(Toggle.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 					Toggle.Title.Text = "Callback Error"
-					print("Rayfield | "..Toggle.Title.Text.." Callback Error " ..tostring(Response))
+					print("Rayfield | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
 					wait(0.5)
-					Toggle.Title.Text = TitleBefore
+					Toggle.Title.Text = ToggleSettings.Name
 					TweenService:Create(Toggle, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(35, 35, 35)}):Play()
 					TweenService:Create(Toggle.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
 				end
@@ -1800,13 +1790,12 @@ function RayfieldLibrary:CreateWindow(Settings)
 								SliderSettings.Callback(NewValue)
 							end)
 							if not Success then
-								local TitleBefore = Slider.Title.Text
 								TweenService:Create(Slider, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 								TweenService:Create(Slider.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 								Slider.Title.Text = "Callback Error"
-								print("Rayfield | "..Slider.Title.Text.." Callback Error " ..tostring(Response))
+								print("Rayfield | "..SliderSettings.Name.." Callback Error " ..tostring(Response))
 								wait(0.5)
-								Slider.Title.Text = TitleBefore
+								Slider.Title.Text = SliderSettings.Name
 								TweenService:Create(Slider, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(35, 35, 35)}):Play()
 								TweenService:Create(Slider.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
 							end
@@ -1828,13 +1817,12 @@ function RayfieldLibrary:CreateWindow(Settings)
 					SliderSettings.Callback(NewVal)
 				end)
 				if not Success then
-					local TitleBefore = Slider.Title.Text
 					TweenService:Create(Slider, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 					TweenService:Create(Slider.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 					Slider.Title.Text = "Callback Error"
-					print("Rayfield | "..Slider.Title.Text.." Callback Error " ..tostring(Response))
+					print("Rayfield | "..SliderSettings.Name.." Callback Error " ..tostring(Response))
 					wait(0.5)
-					Slider.Title.Text = TitleBefore
+					Slider.Title.Text = SliderSettings.Name
 					TweenService:Create(Slider, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(35, 35, 35)}):Play()
 					TweenService:Create(Slider.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
 				end
