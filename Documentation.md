@@ -1,7 +1,7 @@
 # Rayfield Interface Suite
 This is the written documentation for Rayfield Interface Suite
 
-Last updated for the Beta 4 release
+Last updated for the Beta 5 release
 
 ## Booting the Library
 ```lua
@@ -38,6 +38,7 @@ local Window = Rayfield:CreateWindow({
 		Title = "Sirius Hub",
 		Subtitle = "Key System",
 		Note = "Join the discord (discord.gg/sirius)",
+		SaveKey = true,
 		Key = "ABCDEF"
 	}
 })
@@ -45,7 +46,7 @@ local Window = Rayfield:CreateWindow({
 
 ## Creating a Tab
 ```lua
-local Tab = Window:CreateTab("Tab Example")
+local Tab = Window:CreateTab("Tab Example", 4483362458) -- Title, Image
 ```
 
 ## Creating a Section
@@ -59,7 +60,7 @@ Section:Set("Section Example")
 
 ## Notifying the user
 ```lua
-Rayfield:Notify("Title Example","Content/Description Example",10010348543) -- (t,c,image)
+Rayfield:Notify("Title Example", "Content/Description Example", 4483362458) -- Title, Content, Image
 ```
 
 ## Creating a Button
@@ -94,7 +95,7 @@ Toggle:Set(false)
 ```
 
 ## Creating a Color Picker
-Not in Beta 4
+Not in Beta 5
 
 
 ## Creating a Slider
