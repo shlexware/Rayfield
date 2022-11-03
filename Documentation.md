@@ -1,7 +1,7 @@
 # Rayfield Interface Suite
 This is the written documentation for Rayfield Interface Suite
 
-Last updated for the Beta 5 release
+Last updated for the Beta 6 release
 
 ## Booting the Library
 ```lua
@@ -31,16 +31,23 @@ local Window = Rayfield:CreateWindow({
 	LoadingSubtitle = "by Sirius",
 	ConfigurationSaving = {
 		Enabled = true,
-		FolderName = "Rayfield Interface Suite",
+		FolderName = nil, -- Create a custom folder for your hub/game
 		FileName = "Big Hub"
 	},
-	KeySystem = false, -- Set this to true to use our key system
+        Discord = {
+        	Enabled = true,
+        	Invite = "sirius", -- The Discord invite code, do not include discord.gg/
+        	RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+        },
+	KeySystem = true, -- Set this to true to use our key system
 	KeySettings = {
 		Title = "Sirius Hub",
 		Subtitle = "Key System",
 		Note = "Join the discord (discord.gg/sirius)",
+		FileName = "SiriusKey",
 		SaveKey = true,
-		Key = "ABCDEF"
+		GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+		Key = "Hello"
 	}
 })
 ```
@@ -96,7 +103,7 @@ Toggle:Set(false)
 ```
 
 ## Creating a Color Picker
-Not in Beta 5
+Not in Beta 6
 
 
 ## Creating a Slider
