@@ -35,7 +35,7 @@ local Window = Rayfield:CreateWindow({
 		FileName = "Big Hub"
 	},
         Discord = {
-        	Enabled = true,
+        	Enabled = false,
         	Invite = "sirius", -- The Discord invite code, do not include discord.gg/
         	RememberJoins = true -- Set this to false to make them join the discord every time they load it up
         },
