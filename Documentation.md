@@ -1,7 +1,7 @@
 # Rayfield Interface Suite
 This is the written documentation for Rayfield Interface Suite
 
-Last updated for the Beta 6 release
+Last updated for the Beta 7R release
 
 ## Booting the Library
 ```lua
@@ -68,7 +68,20 @@ Section:Set("Section Example")
 
 ## Notifying the user
 ```lua
-Rayfield:Notify("Title Example", "Content/Description Example", 4483362458) -- Title, Content, Image
+Rayfield:Notify({
+    Title = "Notification Title",
+    Content = "Notification Content",
+    Duration = 6.5,
+    Image = 4483362458,
+    Actions = { -- Notification Buttons
+        Ignore = {
+            Name = "Okay!",
+            Callback = function()
+                print("The user tapped Okay!")
+            end
+		},
+	},
+})
 ```
 
 ## Creating a Button
@@ -103,7 +116,7 @@ Toggle:Set(false)
 ```
 
 ## Creating a Color Picker
-Not in Beta 6
+Coming Soon
 
 
 ## Creating a Slider
