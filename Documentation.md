@@ -154,7 +154,7 @@ local Paragraph = Tab:CreateParagraph({Title = "Paragraph Example", Content = "P
 ```
 ### Updating a Paragraph
 ```lua
-Paragprah:Set({Title = "Paragraph Example", Content = "Paragraph Example"})
+Paragraph:Set({Title = "Paragraph Example", Content = "Paragraph Example"})
 ```
 
 ## Creating an Adaptive Input (TextBox)
