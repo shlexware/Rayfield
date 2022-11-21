@@ -1608,8 +1608,76 @@ function RayfieldLibrary:CreateWindow(Settings)
 					end
 				end)
 			end
+			function DropdownSettings:Update(NewTable)
+				for i,v in pairs(Elements.Template.Dropdown.List:GetChildren()) do
+					if v.Name ~= "Template" then 
+						v:Destroy()
+					end
+				end
+				for _, Option in ipairs(NewTable) do
+					local DropdownOption = Elements.Template.Dropdown.List.Template:Clone()
+					DropdownOption.Name = Option
+					DropdownOption.Title.Text = Option
+					DropdownOption.Parent = Dropdown.List
+					DropdownOption.Visible = true
 
+					if DropdownSettings.CurrentOption == Option then
+						DropdownOption.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+					end
 
+					DropdownOption.BackgroundTransparency = 1
+					DropdownOption.UIStroke.Transparency = 1
+					DropdownOption.Title.TextTransparency = 1
+
+					DropdownOption.Interact.ZIndex = 50
+					DropdownOption.Interact.MouseButton1Click:Connect(function()
+						if Dropdown.Selected.Text ~= Option then
+							Dropdown.Selected.Text = Option
+							
+							local Success, Response = pcall(function()
+								DropdownSettings.Callback(Option)
+							end)
+							if not Success then
+								TweenService:Create(Dropdown, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
+								TweenService:Create(Dropdown.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
+								Dropdown.Title.Text = "Callback Error"
+								print("Rayfield | "..DropdownSettings.Name.." Callback Error " ..tostring(Response))
+								wait(0.5)
+								Dropdown.Title.Text = DropdownSettings.Name
+								TweenService:Create(Dropdown, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
+								TweenService:Create(Dropdown.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
+							end
+							DropdownSettings.CurrentOption = Option
+							for _, droption in ipairs(Dropdown.List:GetChildren()) do
+								if droption.ClassName == "Frame" and droption.Name ~= "Placeholder" and droption.Name ~= DropdownSettings.CurrentOption then
+									TweenService:Create(droption, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(30, 30, 30)}):Play()
+								end
+							end
+							TweenService:Create(DropdownOption.UIStroke, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
+							TweenService:Create(DropdownOption, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(40, 40, 40)}):Play()
+							Debounce = true
+							wait(0.2)
+							TweenService:Create(DropdownOption.UIStroke, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
+							wait(0.1)
+							TweenService:Create(Dropdown, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Size = UDim2.new(1, -10, 0, 45)}):Play()
+							for _, DropdownOpt in ipairs(Dropdown.List:GetChildren()) do
+								if DropdownOpt.ClassName == "Frame" and DropdownOpt.Name ~= "Placeholder" then
+									TweenService:Create(DropdownOpt, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
+									TweenService:Create(DropdownOpt.UIStroke, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
+									TweenService:Create(DropdownOpt.Title, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
+								end
+							end
+							TweenService:Create(Dropdown.List, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {ScrollBarImageTransparency = 1}):Play()
+							TweenService:Create(Dropdown.Toggle, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {Rotation = 180}):Play()	
+							wait(0.35)
+							Dropdown.List.Visible = false
+							Debounce = false	
+							SaveConfiguration()
+						end
+					end)
+				end
+			end
+			
 			function DropdownSettings:Set(NewOption)
 				Dropdown.Selected.Text = NewOption
 				DropdownSettings.CurrentOption = NewOption
