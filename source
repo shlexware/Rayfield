@@ -244,10 +244,10 @@ local function LoadConfiguration(Configuration)
 	table.foreach(Data, function(FlagName, FlagValue)
 		if RayfieldLibrary.Flags[FlagName] then
 			spawn(function() 
-				if RayfieldLibrary.Flags[FlagName].Type == "Colorpicker" then
+				if RayfieldLibrary.Flags[FlagName].Type == "ColorPicker" then
 					RayfieldLibrary.Flags[FlagName]:Set(UnpackColor(FlagValue))
 				else
-					if RayfieldLibrary.Flags[FlagName].CurrentValue or RayfieldLibrary.Flags[FlagName].CurrentKeybind or RayfieldLibrary.Flags[FlagName].CurrentOption ~= FlagValue then RayfieldLibrary.Flags[FlagName]:Set(FlagValue) end
+					if RayfieldLibrary.Flags[FlagName].CurrentValue or RayfieldLibrary.Flags[FlagName].CurrentKeybind or RayfieldLibrary.Flags[FlagName].CurrentOption or RayfieldLibrary.Flags[FlagName].Color ~= FlagValue then RayfieldLibrary.Flags[FlagName]:Set(FlagValue) end
 				end    
 			end)
 		else
@@ -260,10 +260,10 @@ local function SaveConfiguration()
 	if not CEnabled then return end
 	local Data = {}
 	for i,v in pairs(RayfieldLibrary.Flags) do
-		if v.Type == "Colorpicker" then
-			Data[i] = PackColor(v.CurrentValue)
+		if v.Type == "ColorPicker" then
+			Data[i] = PackColor(v.Color)
 		else
-			Data[i] = v.CurrentValue or v.CurrentKeybind or v.CurrentOption
+			Data[i] = v.CurrentValue or v.CurrentKeybind or v.CurrentOption or v.Color
 		end
 	end	
 	writefile(ConfigurationFolder .. "/" .. CFileName .. ConfigurationExtension, tostring(HttpService:JSONEncode(Data)))
@@ -1318,7 +1318,8 @@ function RayfieldLibrary:CreateWindow(Settings)
 		end
 		
 		-- ColorPicker
-		function Tab:CreateColorPicker(ColorPickerSettings)
+		function Tab:CreateColorPicker(ColorPickerSettings) -- by Throit
+			ColorPickerSettings.Type = "ColorPicker"
 			local ColorPicker = Elements.Template.ColorPicker:Clone()
 			local Background = ColorPicker.CPBackground
 			local Display = Background.Display
@@ -1388,7 +1389,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 			Slider.SliderPoint.MouseButton1Down:Connect(function()
 				sliderDragging = true 
 			end)
-			local h,s,v = ColorPickerSettings.DefaultColor:ToHSV()
+			local h,s,v = ColorPickerSettings.Color:ToHSV()
 			local color = Color3.fromHSV(h,s,v) 
 			local hex = string.format("#%02X%02X%02X",color.R*0xFF,color.G*0xFF,color.B*0xFF)
 			ColorPicker.HexInput.InputBox.Text = hex
@@ -1418,11 +1419,15 @@ function RayfieldLibrary:CreateWindow(Settings)
 						h,s,v = rgbColor:ToHSV()
 						hex = ColorPicker.HexInput.InputBox.Text
 						setDisplay()
+						ColorPickerSettings.Color = rgbColor
 					end) 
 				then 
 					ColorPicker.HexInput.InputBox.Text = hex 
 				end
 				pcall(function()ColorPickerSettings.Callback(Color3.fromHSV(h,s,v))end)
+				local r,g,b = math.floor((h*255)+0.5),math.floor((s*255)+0.5),math.floor((v*255)+0.5)
+				ColorPickerSettings.Color = Color3.fromRGB(r,g,b)
+				SaveConfiguration()
 			end)
 			--RGB
 			local function rgbBoxes(box,toChange)
@@ -1434,10 +1439,14 @@ function RayfieldLibrary:CreateWindow(Settings)
 				if value then 
 					value = math.clamp(value,0,255)
 					h,s,v = Color3.fromRGB(oldR,oldG,oldB):ToHSV()
+					
 					setDisplay()
 				else 
 					box.Text = tostring(save)
 				end
+				local r,g,b = math.floor((h*255)+0.5),math.floor((s*255)+0.5),math.floor((v*255)+0.5)
+				ColorPickerSettings.Color = Color3.fromRGB(r,g,b)
+				SaveConfiguration()
 			end
 			ColorPicker.RGB.RInput.InputBox.FocusLost:connect(function()
 				rgbBoxes(ColorPicker.RGB.RInput.InputBox,"R")
@@ -1452,20 +1461,6 @@ function RayfieldLibrary:CreateWindow(Settings)
 				pcall(function()ColorPickerSettings.Callback(Color3.fromHSV(h,s,v))end)
 			end)
 
-
-			ColorPicker.RGB.BInput.InputBox.FocusLost:connect(function()
-				local b = tonumber(ColorPicker.RGB.BInput.InputBox.Text) 
-				local color = Color3.fromHSV(h,s,v) 
-				local oldR,oldG,oldB = math.floor((color.R*255)+0.5),math.floor((color.G*255)+0.5),math.floor((color.B*255)+0.5)
-				if b then 
-					b = math.clamp(b,0,255)
-					h,s,v = Color3.fromRGB(oldR,oldG,b):ToHSV()
-					setDisplay()
-				else 
-					ColorPicker.RGB.RInput.InputBox.Text = tostring(oldB)
-				end
-				pcall(function()ColorPickerSettings.Callback(Color3.fromHSV(h,s,v))end)
-			end)
 			game:GetService("RunService").RenderStepped:connect(function()
 				if mainDragging then 
 					local localX = math.clamp(mouse.X-Main.AbsolutePosition.X,0,Main.AbsoluteSize.X)
@@ -1483,6 +1478,8 @@ function RayfieldLibrary:CreateWindow(Settings)
 					ColorPicker.RGB.BInput.InputBox.Text = tostring(b)
 					ColorPicker.HexInput.InputBox.Text = string.format("#%02X%02X%02X",color.R*0xFF,color.G*0xFF,color.B*0xFF)
 					pcall(function()ColorPickerSettings.Callback(Color3.fromHSV(h,s,v))end)
+					ColorPickerSettings.Color = Color3.fromRGB(r,g,b)
+					SaveConfiguration()
 				end
 				if sliderDragging then 
 					local localX = math.clamp(mouse.X-Slider.AbsolutePosition.X,0,Slider.AbsoluteSize.X)
@@ -1499,8 +1496,25 @@ function RayfieldLibrary:CreateWindow(Settings)
 					ColorPicker.RGB.BInput.InputBox.Text = tostring(b)
 					ColorPicker.HexInput.InputBox.Text = string.format("#%02X%02X%02X",color.R*0xFF,color.G*0xFF,color.B*0xFF)
 					pcall(function()ColorPickerSettings.Callback(Color3.fromHSV(h,s,v))end)
+					ColorPickerSettings.Color = Color3.fromRGB(r,g,b)
+					SaveConfiguration()
 				end
 			end)
+			
+			if Settings.ConfigurationSaving then
+				if Settings.ConfigurationSaving.Enabled and ColorPickerSettings.Flag then
+					RayfieldLibrary.Flags[ColorPickerSettings.Flag] = ColorPickerSettings
+				end
+			end
+			
+			function ColorPickerSettings:Set(RGBColor)
+				ColorPickerSettings.Color = RGBColor
+				h,s,v = ColorPickerSettings.Color:ToHSV()
+				color = Color3.fromHSV(h,s,v)
+				setDisplay()
+			end
+			
+			return ColorPickerSettings
 		end
 		
 		-- Section
