@@ -1324,47 +1324,63 @@ function RayfieldLibrary:CreateWindow(Settings)
 			local Display = Background.Display
 			local Main = Background.MainCP
 			local Slider = ColorPicker.ColorSlider
-			ColorPicker.Title.Position = UDim2.new(1,-63,0,23)
 			ColorPicker.ClipsDescendants = true
 			ColorPicker.Name = ColorPickerSettings.Name
 			ColorPicker.Title.Text = ColorPickerSettings.Name
 			ColorPicker.Visible = true
 			ColorPicker.Parent = TabPage
-			ColorPicker.Interact.Size = UDim2.new(1,0,0,ColorPicker.AbsoluteSize.Y+5)
-			local mainSizes = {[true]=UDim2.new(1,-10,0.224,40),[false]=ColorPicker.Size}
-			local pickerSize = {[true]=UDim2.new(0,173,0,86),[false]=Background.Size}
-			local pickerPos = {[true]=UDim2.new(0.607,0,0,12),[false]=Background.Position}
+			ColorPicker.Size = UDim2.new(1, -10, 0.028, 35)
+			Background.Size = UDim2.new(0, 39, 0, 22)
+			Display.BackgroundTransparency = 0
+			Main.MainPoint.ImageTransparency = 1
+			ColorPicker.Interact.Size = UDim2.new(1, 0, 1, 0)
+			ColorPicker.Interact.Position = UDim2.new(0.5, 0, 0.5, 0)
+			ColorPicker.RGB.Position = UDim2.new(0, 17, 0, 70)
+			ColorPicker.HexInput.Position = UDim2.new(0, 17, 0, 90)
+			
+			
+			
 			local opened = false 
 			local mouse = game.Players.LocalPlayer:GetMouse()
 			Main.Image = "http://www.roblox.com/asset/?id=11415645739"
 			local mainDragging = false 
 			local sliderDragging = false 
 			ColorPicker.Interact.MouseButton1Down:Connect(function()
-				local canOpen = true 
-				if opened then 
-					canOpen = not (mouse.Y > Main.AbsolutePosition.Y and mouse.Y < Main.AbsolutePosition.Y + Main.AbsoluteSize.Y and (mouse.X > Main.AbsolutePosition.X and mouse.X < Main.AbsolutePosition.X+Main.AbsoluteSize.X))
-					if canOpen == false then
-						mainDragging = true
-					end 
-				end
-				if canOpen then
-					opened = not opened 
-					ColorPicker.Size = mainSizes[opened]
-					Background.Size = pickerSize[opened]
-					Background.Position = pickerPos[opened]
-					Display.Visible = not opened
-					Main.MainPoint.Visible = opened
+				if not opened then
+					opened = true 
+					TweenService:Create(ColorPicker, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Size = UDim2.new(1, -10, 0.224, 40)}):Play()
+					TweenService:Create(Background, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 173, 0, 86)}):Play()
+					TweenService:Create(Display, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
+					TweenService:Create(ColorPicker.Interact, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Position = UDim2.new(0.289, 0, 0.5, 0)}):Play()
+					TweenService:Create(ColorPicker.RGB, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {Position = UDim2.new(0, 17, 0, 40)}):Play()
+					TweenService:Create(ColorPicker.HexInput, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Position = UDim2.new(0, 17, 0, 73)}):Play()
+					TweenService:Create(ColorPicker.Interact, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Size = UDim2.new(0.574, 0, 1, 0)}):Play()
+					TweenService:Create(Main.MainPoint, TweenInfo.new(0.2, Enum.EasingStyle.Quint), {ImageTransparency = 0}):Play()
+				else
+					opened = false
+					TweenService:Create(ColorPicker, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Size = UDim2.new(1, -10, 0.028, 35)}):Play()
+					TweenService:Create(Background, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 39, 0, 22)}):Play()
+					TweenService:Create(ColorPicker.Interact, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Size = UDim2.new(1, 0, 1, 0)}):Play()
+					TweenService:Create(ColorPicker.Interact, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Position = UDim2.new(0.5, 0, 0.5, 0)}):Play()
+					TweenService:Create(ColorPicker.RGB, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Position = UDim2.new(0, 17, 0, 70)}):Play()
+					TweenService:Create(ColorPicker.HexInput, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Position = UDim2.new(0, 17, 0, 90)}):Play()
+					TweenService:Create(Display, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play()
+					TweenService:Create(Main.MainPoint, TweenInfo.new(0.2, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
 				end
 			end)
 			game:GetService("UserInputService").InputEnded:Connect(function(input, gameProcessed) if input.UserInputType == Enum.UserInputType.MouseButton1 then 
 					mainDragging = false
 					sliderDragging = false
-				end end)
+			end end)
 			Main.MouseButton1Down:Connect(function()
-				mainDragging = true 
+				if opened then
+					mainDragging = true 
+				end
 			end)
 			Main.MainPoint.MouseButton1Down:Connect(function()
-				mainDragging = true 
+				if opened then
+					mainDragging = true 
+				end
 			end)
 			Slider.MouseButton1Down:Connect(function()
 				sliderDragging = true 
@@ -1372,10 +1388,10 @@ function RayfieldLibrary:CreateWindow(Settings)
 			Slider.SliderPoint.MouseButton1Down:Connect(function()
 				sliderDragging = true 
 			end)
-			local h,s,v = ColorPickerSettings.DefualtColor:ToHSV()
+			local h,s,v = ColorPickerSettings.DefaultColor:ToHSV()
 			local color = Color3.fromHSV(h,s,v) 
 			local hex = string.format("#%02X%02X%02X",color.R*0xFF,color.G*0xFF,color.B*0xFF)
-			ColorPicker.HexInput.Input.InputBox.Text = hex
+			ColorPicker.HexInput.InputBox.Text = hex
 			local function setDisplay()
 				--Main
 				Main.MainPoint.Position = UDim2.new(s,-Main.MainPoint.AbsoluteSize.X/2,1-v,-Main.MainPoint.AbsoluteSize.Y/2)
@@ -1388,26 +1404,23 @@ function RayfieldLibrary:CreateWindow(Settings)
 				Slider.SliderPoint.ImageColor3 = Color3.fromHSV(h,1,1)
 				local color = Color3.fromHSV(h,s,v) 
 				local r,g,b = math.floor((color.R*255)+0.5),math.floor((color.G*255)+0.5),math.floor((color.B*255)+0.5)
-				ColorPicker.RGBInput.RInput.InputBox.Text = tostring(r)
-				ColorPicker.RGBInput.GInput.InputBox.Text = tostring(g)
-				ColorPicker.RGBInput.BInput.InputBox.Text = tostring(b)
-				ColorPicker.HSVInput.HInput.InputBox.Text = tostring(math.floor(h*100)/100)
-				ColorPicker.HSVInput.SInput.InputBox.Text = tostring(math.floor(s*100)/100)
-				ColorPicker.HSVInput.VInput.InputBox.Text = tostring(math.floor(v*100)/100)
+				ColorPicker.RGB.RInput.InputBox.Text = tostring(r)
+				ColorPicker.RGB.GInput.InputBox.Text = tostring(g)
+				ColorPicker.RGB.BInput.InputBox.Text = tostring(b)
 				hex = string.format("#%02X%02X%02X",color.R*0xFF,color.G*0xFF,color.B*0xFF)
-				ColorPicker.HexInput.Input.InputBox.Text = hex
+				ColorPicker.HexInput.InputBox.Text = hex
 			end
 			setDisplay()
-			ColorPicker.HexInput.Input.InputBox.FocusLost:Connect(function()
+			ColorPicker.HexInput.InputBox.FocusLost:Connect(function()
 				if not pcall(function()
-						local r, g, b = string.match(ColorPicker.HexInput.Input.InputBox.Text, "^#?(%w%w)(%w%w)(%w%w)$")
+						local r, g, b = string.match(ColorPicker.HexInput.InputBox.Text, "^#?(%w%w)(%w%w)(%w%w)$")
 						local rgbColor = Color3.fromRGB(tonumber(r, 16),tonumber(g, 16), tonumber(b, 16))
 						h,s,v = rgbColor:ToHSV()
-						hex = ColorPicker.HexInput.Input.InputBox.Text
+						hex = ColorPicker.HexInput.InputBox.Text
 						setDisplay()
 					end) 
 				then 
-					ColorPicker.HexInput.Input.InputBox.Text = hex 
+					ColorPicker.HexInput.InputBox.Text = hex 
 				end
 				pcall(function()ColorPickerSettings.Callback(Color3.fromHSV(h,s,v))end)
 			end)
@@ -1426,49 +1439,22 @@ function RayfieldLibrary:CreateWindow(Settings)
 					box.Text = tostring(save)
 				end
 			end
-			local function hsvBoxes(box,toChange)
-				local value = tonumber(box.Text) 
-				if value then value = math.clamp(value,0,1) end
-				local oldH,oldS,oldV = h,s,v
-				local save 
-				if toChange == "H" then save = oldH;oldH = value elseif toChange == "S" then save = oldS;oldS = value else save = oldV;oldV = value end
-				if value then 
-					h,s,v = oldH,oldS,oldV
-					setDisplay()
-				else 
-					save = math.floor(save*100)/100
-					box.Text = tostring(save)
-				end
-			end
-			ColorPicker.RGBInput.RInput.InputBox.FocusLost:connect(function()
-				rgbBoxes(ColorPicker.RGBInput.RInput.InputBox,"R")
+			ColorPicker.RGB.RInput.InputBox.FocusLost:connect(function()
+				rgbBoxes(ColorPicker.RGB.RInput.InputBox,"R")
 				pcall(function()ColorPickerSettings.Callback(Color3.fromHSV(h,s,v))end)
 			end)
-			ColorPicker.RGBInput.GInput.InputBox.FocusLost:connect(function()
-				rgbBoxes(ColorPicker.RGBInput.GInput.InputBox,"G")
+			ColorPicker.RGB.GInput.InputBox.FocusLost:connect(function()
+				rgbBoxes(ColorPicker.RGB.GInput.InputBox,"G")
 				pcall(function()ColorPickerSettings.Callback(Color3.fromHSV(h,s,v))end)
 			end)
-			ColorPicker.RGBInput.BInput.InputBox.FocusLost:connect(function()
-				rgbBoxes(ColorPicker.RGBInput.BInput.InputBox,"B")
-				pcall(function()ColorPickerSettings.Callback(Color3.fromHSV(h,s,v))end)
-			end)
-
-			ColorPicker.HSVInput.HInput.InputBox.FocusLost:connect(function()
-				hsvBoxes(ColorPicker.HSVInput.HInput.InputBox,"H")
-				pcall(function()ColorPickerSettings.Callback(Color3.fromHSV(h,s,v))end)
-			end)
-			ColorPicker.HSVInput.SInput.InputBox.FocusLost:connect(function()
-				hsvBoxes(ColorPicker.HSVInput.SInput.InputBox,"S")
-				pcall(function()ColorPickerSettings.Callback(Color3.fromHSV(h,s,v))end)
-			end)
-			ColorPicker.HSVInput.VInput.InputBox.FocusLost:connect(function()
-				hsvBoxes(ColorPicker.HSVInput.VInput.InputBox,"V")
+			ColorPicker.RGB.BInput.InputBox.FocusLost:connect(function()
+				rgbBoxes(ColorPicker.RGB.BInput.InputBox,"B")
 				pcall(function()ColorPickerSettings.Callback(Color3.fromHSV(h,s,v))end)
 			end)
 
 
-			ColorPicker.RGBInput.BInput.InputBox.FocusLost:connect(function()
-				local b = tonumber(ColorPicker.RGBInput.BInput.InputBox.Text) 
+			ColorPicker.RGB.BInput.InputBox.FocusLost:connect(function()
+				local b = tonumber(ColorPicker.RGB.BInput.InputBox.Text) 
 				local color = Color3.fromHSV(h,s,v) 
 				local oldR,oldG,oldB = math.floor((color.R*255)+0.5),math.floor((color.G*255)+0.5),math.floor((color.B*255)+0.5)
 				if b then 
@@ -1476,7 +1462,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 					h,s,v = Color3.fromRGB(oldR,oldG,b):ToHSV()
 					setDisplay()
 				else 
-					ColorPicker.RGBInput.RInput.InputBox.Text = tostring(oldB)
+					ColorPicker.RGB.RInput.InputBox.Text = tostring(oldB)
 				end
 				pcall(function()ColorPickerSettings.Callback(Color3.fromHSV(h,s,v))end)
 			end)
@@ -1492,13 +1478,10 @@ function RayfieldLibrary:CreateWindow(Settings)
 					Background.BackgroundColor3 = Color3.fromHSV(h,1,1)
 					local color = Color3.fromHSV(h,s,v) 
 					local r,g,b = math.floor((color.R*255)+0.5),math.floor((color.G*255)+0.5),math.floor((color.B*255)+0.5)
-					ColorPicker.RGBInput.RInput.InputBox.Text = tostring(r)
-					ColorPicker.RGBInput.GInput.InputBox.Text = tostring(g)
-					ColorPicker.RGBInput.BInput.InputBox.Text = tostring(b)
-					ColorPicker.HSVInput.HInput.InputBox.Text = tostring(math.floor(h*100)/100)
-					ColorPicker.HSVInput.SInput.InputBox.Text = tostring(math.floor(s*100)/100)
-					ColorPicker.HSVInput.VInput.InputBox.Text = tostring(math.floor(v*100)/100)
-					ColorPicker.HexInput.Input.InputBox.Text = string.format("#%02X%02X%02X",color.R*0xFF,color.G*0xFF,color.B*0xFF)
+					ColorPicker.RGB.RInput.InputBox.Text = tostring(r)
+					ColorPicker.RGB.GInput.InputBox.Text = tostring(g)
+					ColorPicker.RGB.BInput.InputBox.Text = tostring(b)
+					ColorPicker.HexInput.InputBox.Text = string.format("#%02X%02X%02X",color.R*0xFF,color.G*0xFF,color.B*0xFF)
 					pcall(function()ColorPickerSettings.Callback(Color3.fromHSV(h,s,v))end)
 				end
 				if sliderDragging then 
@@ -1511,13 +1494,10 @@ function RayfieldLibrary:CreateWindow(Settings)
 					Main.MainPoint.ImageColor3 = Color3.fromHSV(h,s,v)
 					local color = Color3.fromHSV(h,s,v) 
 					local r,g,b = math.floor((color.R*255)+0.5),math.floor((color.G*255)+0.5),math.floor((color.B*255)+0.5)
-					ColorPicker.RGBInput.RInput.InputBox.Text = tostring(r)
-					ColorPicker.RGBInput.GInput.InputBox.Text = tostring(g)
-					ColorPicker.RGBInput.BInput.InputBox.Text = tostring(b)
-					ColorPicker.HSVInput.HInput.InputBox.Text = tostring(math.floor(h*100)/100)
-					ColorPicker.HSVInput.SInput.InputBox.Text = tostring(math.floor(s*100)/100)
-					ColorPicker.HSVInput.VInput.InputBox.Text = tostring(math.floor(v*100)/100)
-					ColorPicker.HexInput.Input.InputBox.Text = string.format("#%02X%02X%02X",color.R*0xFF,color.G*0xFF,color.B*0xFF)
+					ColorPicker.RGB.RInput.InputBox.Text = tostring(r)
+					ColorPicker.RGB.GInput.InputBox.Text = tostring(g)
+					ColorPicker.RGB.BInput.InputBox.Text = tostring(b)
+					ColorPicker.HexInput.InputBox.Text = string.format("#%02X%02X%02X",color.R*0xFF,color.G*0xFF,color.B*0xFF)
 					pcall(function()ColorPickerSettings.Callback(Color3.fromHSV(h,s,v))end)
 				end
 			end)
