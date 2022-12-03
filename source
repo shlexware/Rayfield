@@ -1,22 +1,28 @@
 --[[
 
-Rayfield Interface Suite
-by Sirius
+ _______                        ______   __            __        __ 
+|       \                      /      \ |  \          |  \      |  \
+| $$$$$$$\  ______   __    __ |  $$$$$$\ \$$  ______  | $$  ____| $$
+| $$__| $$ |      \ |  \  |  \| $$_  \$$|  \ /      \ | $$ /      $$
+| $$    $$  \$$$$$$\| $$  | $$| $$ \    | $$|  $$$$$$\| $$|  $$$$$$$
+| $$$$$$$\ /      $$| $$  | $$| $$$$    | $$| $$    $$| $$| $$  | $$
+| $$  | $$|  $$$$$$$| $$__/ $$| $$      | $$| $$$$$$$$| $$| $$__| $$
+| $$  | $$ \$$    $$ \$$    $$| $$      | $$ \$$     \| $$ \$$    $$
+ \$$   \$$  \$$$$$$$ _\$$$$$$$ \$$       \$$  \$$$$$$$ \$$  \$$$$$$$
+                    |  \__| $$                                      
+                     \$$    $$  by Sirius                                
+                      \$$$$$$                                       
 
 shlex | Designing + Programming
 iRay  | Programming
 
-]]
-
-
+]]--
 
 local Release = "Beta 7R"
 local NotificationDuration = 6.5
 local RayfieldFolder = "Rayfield"
 local ConfigurationFolder = RayfieldFolder.."/Configurations"
 local ConfigurationExtension = ".rfld"
-
-
 
 local RayfieldLibrary = {
 	Flags = {},
@@ -102,8 +108,6 @@ local RayfieldLibrary = {
 	}
 }
 
-
-
 -- Services
 
 local UserInputService = game:GetService("UserInputService")
@@ -115,8 +119,6 @@ local CoreGui = game:GetService("CoreGui")
 
 -- Interface Management
 local Rayfield = game:GetObjects("rbxassetid://10804731440")[1]
-
-
 
 if gethui then
 	Rayfield.Parent = gethui()
@@ -156,7 +158,6 @@ local TabList = Main.TabList
 
 Rayfield.DisplayOrder = 100
 LoadingFrame.Version.Text = Release
-
 
 -- Variables
 
@@ -566,8 +567,6 @@ function RayfieldLibrary:Notify(NotificationSettings)
 		TweenService:Create(Notification.Description, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {TextTransparency = 0.2}):Play()
 		wait(0.2)
 
-
-
 		-- Requires Graphics Level 8-10
 		if getgenv().SecureMode == nil then
 			TweenService:Create(Notification, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.4}):Play()
@@ -756,7 +755,6 @@ function Maximise()
 	Debounce = true
 	Topbar.ChangeSize.Image = "rbxassetid://"..10137941941
 
-
 	TweenService:Create(Topbar.UIStroke, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 	TweenService:Create(Main.Shadow.Image, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {ImageTransparency = 0.4}):Play()
 	TweenService:Create(Topbar.CornerRepair, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play()
@@ -791,7 +789,6 @@ function Maximise()
 		end
 	end
 
-
 	wait(0.1)
 
 	for _, tabbtn in ipairs(TabList:GetChildren()) do
@@ -812,7 +809,6 @@ function Maximise()
 			
 		end
 	end
-
 
 	wait(0.5)
 	Debounce = false
@@ -1815,7 +1811,6 @@ function RayfieldLibrary:CreateWindow(Settings)
 					end
 				end)
 			end
-
 
 			function DropdownSettings:Set(NewOption)
 				Dropdown.Selected.Text = NewOption
