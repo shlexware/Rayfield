@@ -115,9 +115,22 @@ local Toggle = Tab:CreateToggle({
 Toggle:Set(false)
 ```
 
-## Creating a Color Picker
-Coming Soon
-
+## Creating a ColorPicker
+```lua
+local ColorPicker = Tab:CreateColorPicker({
+	Name = "ColorPicker Example",
+	Color = Color3.fromRGB(255,255,255),
+	Flag = "ColorPicker1" -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+	Callback = function(Value)
+		-- The functcion that takes place when the colorpicker color changes
+		-- The variable (Value) is a hsv color on what color the colorpicker is set to
+	end
+})
+```
+### Updating a ColorPicker
+```lua
+ColorPicker:Set(Color3.fromRGB(255,255,255)) -- The new colorpicker color value
+```
 
 ## Creating a Slider
 ```lua
@@ -209,7 +222,7 @@ Dropdown:Set("Option 2") -- The new option value
 ```
 
 ## Check the value of an existing element
-To check the current value of an existing element, using the variable, you can do `ElementName.CurrentValue`, if it's a keybind or dropdown, you will need to use `KeybindName.CurrentKeybind` or `DropdownName.CurrentOption`
+To check the current value of an existing element, using the variable, you can do `ElementName.CurrentValue`, if it's a keybind, dropdown, or colorpicker, you will need to use `KeybindName.CurrentKeybind`, `DropdownName.CurrentOption`, or `ColorPickerName.Color`
 You can also check it via the flags from `Rayfield.Flags`
 
 
