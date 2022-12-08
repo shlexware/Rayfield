@@ -2134,10 +2134,25 @@ function RayfieldLibrary:CreateWindow(Settings)
 
 			TweenService:Create(Slider, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play()
 			TweenService:Create(Slider.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
-			TweenService:Create(Slider.Title, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()	
+			TweenService:Create(Slider.Title, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
 
-			Slider.Main.Progress.Size =	UDim2.new(0, Slider.Main.AbsoluteSize.X * ((SliderSettings.CurrentValue + SliderSettings.Range[1]) / (SliderSettings.Range[2] - SliderSettings.Range[1])) > 5 and Slider.Main.AbsoluteSize.X * (SliderSettings.CurrentValue / (SliderSettings.Range[2] - SliderSettings.Range[1])) or 5, 1, 0)
+            local Start_Pixels = Slider.Main.AbsolutePosition.X
+			local End_Pixels = Slider.Main.AbsolutePosition.X + Slider.Main.AbsoluteSize.X
 
+			local sliderSize = (End_Pixels - Start_Pixels) --Full bar size in px
+				* (
+					(SliderSettings.CurrentValue + SliderSettings.Range[1])
+					/ (SliderSettings.Range[2] - SliderSettings.Range[1])
+				)
+
+			if sliderSize < 5 then
+				sliderSize = 5
+			elseif sliderSize > (End_Pixels - Start_Pixels) then
+				sliderSize = (End_Pixels - Start_Pixels)
+			end
+
+			Slider.Main.Progress.Size = UDim2.new(0, sliderSize, 1, 0)
+            
 			if not SliderSettings.Suffix then
 				Slider.Main.Information.Text = tostring(SliderSettings.CurrentValue)
 			else
