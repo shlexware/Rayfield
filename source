@@ -2136,7 +2136,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 			TweenService:Create(Slider.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
 			TweenService:Create(Slider.Title, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
 
-            local Start_Pixels = Slider.Main.AbsolutePosition.X
+            		local Start_Pixels = Slider.Main.AbsolutePosition.X
 			local End_Pixels = Slider.Main.AbsolutePosition.X + Slider.Main.AbsoluteSize.X
 
 			local sliderSize = (End_Pixels - Start_Pixels) --Full bar size in px
