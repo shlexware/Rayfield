@@ -253,7 +253,7 @@ local function LoadConfiguration(Configuration)
 		else
 			RayfieldLibrary:Notify({Title = "Flag Error", Content = "Rayfield was unable to find '"..FlagName.. "'' in the current script"})
 		end
-	end)
+	end
 end
 
 local function SaveConfiguration()
@@ -2363,6 +2363,5 @@ function RayfieldLibrary:LoadConfiguration()
 end
 
 task.defer(LoadConfiguration)
-print("Loaded config!")
 
 return RayfieldLibrary
