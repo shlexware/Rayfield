@@ -241,7 +241,7 @@ end
 
 local function LoadConfiguration(Configuration)
 	local Data = HttpService:JSONDecode(Configuration)
-	table.foreach(Data, function(FlagName, FlagValue)
+	for FlagName, FlagValue in next, Data do
 		if RayfieldLibrary.Flags[FlagName] then
 			spawn(function() 
 				if RayfieldLibrary.Flags[FlagName].Type == "ColorPicker" then
