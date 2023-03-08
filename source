@@ -2363,5 +2363,6 @@ function RayfieldLibrary:LoadConfiguration()
 end
 
 task.defer(LoadConfiguration)
+print("Loaded config!")
 
 return RayfieldLibrary
