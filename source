@@ -2362,4 +2362,6 @@ function RayfieldLibrary:LoadConfiguration()
 	end
 end
 
+task.defer(LoadConfiguration)
+
 return RayfieldLibrary
