@@ -10,7 +10,7 @@ iRay  | Programming
 
 
 
-local Release = "Beta 8E"
+local Release = "Beta 8"
 local NotificationDuration = 6.5
 local RayfieldFolder = "Rayfield"
 local ConfigurationFolder = RayfieldFolder.."/Configurations"
@@ -964,12 +964,17 @@ function RayfieldLibrary:CreateWindow(Settings)
 			makefolder(RayfieldFolder.."/Key System")
 		end
 
+		if typeof(Settings.KeySettings.Key) == "string" then Settings.KeySettings.Key = {Settings.KeySettings.Key} end
+
 		if Settings.KeySettings.GrabKeyFromSite then
-			local Success, Response = pcall(function()
-				Settings.KeySettings.Key = game:HttpGet(Settings.KeySettings.Key)
-			end)
-			if not Success then
-				print("Rayfield | "..Settings.KeySettings.Key.." Error " ..tostring(Response))
+			for i, Key in ipairs(Settings.KeySettings.Key) do
+				local Success, Response = pcall(function()
+					Settings.KeySettings.Key[i] = tostring(game:HttpGet(Key):gsub("[\n\r]", " "))
+					Settings.KeySettings.Key[i] = string.gsub(Settings.KeySettings.Key[i], " ", "")
+				end)
+				if not Success then
+					print("Rayfield | "..Key.." Error " ..tostring(Response))
+				end
 			end
 		end
 
@@ -978,8 +983,10 @@ function RayfieldLibrary:CreateWindow(Settings)
 		end
 
 		if isfile(RayfieldFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension) then
-			if readfile(RayfieldFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension) == Settings.KeySettings.Key then
-				Passthrough = true
+			for _, MKey in ipairs(Settings.KeySettings.Key) do
+				if string.find(readfile(RayfieldFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension), MKey) then
+					Passthrough = true
+				end
 			end
 		end
 
@@ -1050,7 +1057,16 @@ function RayfieldLibrary:CreateWindow(Settings)
 
 
 			KeyUI.Main.Input.InputBox.FocusLost:Connect(function()
-				if KeyMain.Input.InputBox.Text == Settings.KeySettings.Key then
+				if #KeyUI.Main.Input.InputBox.Text == 0 then return end
+				local KeyFound = false
+				local FoundKey = ''
+				for _, MKey in ipairs(Settings.KeySettings.Key) do
+					if string.find(KeyMain.Input.InputBox.Text, MKey) then
+						KeyFound = true
+						FoundKey = MKey
+					end
+				end
+				if KeyFound then 
 					TweenService:Create(KeyMain, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
 					TweenService:Create(KeyMain, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 467, 0, 175)}):Play()
 					TweenService:Create(KeyMain.Shadow.Image, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
@@ -1067,7 +1083,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 					Passthrough = true
 					if Settings.KeySettings.SaveKey then
 						if writefile then
-							writefile(RayfieldFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension, Settings.KeySettings.Key)
+							writefile(RayfieldFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension, FoundKey)
 						end
 						RayfieldLibrary:Notify({Title = "Key System", Content = "The key for this script has been saved successfully"})
 					end
@@ -1690,7 +1706,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 			if typeof(DropdownSettings.CurrentOption) == "string" then
 				DropdownSettings.CurrentOption = {DropdownSettings.CurrentOption}
 			end
-			
+
 			if not DropdownSettings.MultipleOptions then
 				DropdownSettings.CurrentOption = {DropdownSettings.CurrentOption[1]}
 			end
@@ -1841,7 +1857,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 						wait(0.2)
 						TweenService:Create(DropdownOption.UIStroke, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
 					end
-					
+
 
 					local Success, Response = pcall(function()
 						DropdownSettings.Callback(DropdownSettings.CurrentOption)
@@ -1882,7 +1898,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 					SaveConfiguration()
 				end)
 			end
-			
+
 			for _, droption in ipairs(Dropdown.List:GetChildren()) do
 				if droption.ClassName == "Frame" and droption.Name ~= "Placeholder" then
 					if not table.find(DropdownSettings.CurrentOption, droption.Name) then
@@ -1899,7 +1915,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 				if typeof(DropdownSettings.CurrentOption) == "string" then
 					DropdownSettings.CurrentOption = {DropdownSettings.CurrentOption}
 				end
-				
+
 				if not DropdownSettings.MultipleOptions then
 					DropdownSettings.CurrentOption = {DropdownSettings.CurrentOption[1]}
 				end
