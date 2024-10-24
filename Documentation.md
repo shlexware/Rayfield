@@ -1,2 +1,2 @@
 This documentation is outdated.
-Forwarding you to: https://rayfield.dev/
+Forwarding you to: https://docs.sirius.menu
